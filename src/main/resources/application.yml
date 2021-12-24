@@ -1,0 +1,11 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+  profiles:
+    active: local
+
+  #datasource:
+   # initialization-mode: always
+   # data: classpath:data.sql
+   # continue-on-error: true
