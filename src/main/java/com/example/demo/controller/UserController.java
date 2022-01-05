@@ -1,13 +1,16 @@
 package com.example.demo.controller;
 
-import com.example.demo.services.UserService;
+import com.example.demo.service.UserService;
 import com.example.demo.vo.User;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @Getter
 @RequestMapping("/user")
@@ -20,10 +23,20 @@ public class UserController {
     public User createNewProfil(@RequestParam String name,
                                 @RequestParam String firstname,
                                 @RequestParam String mail) {
-        User u = new User();
 
-        u = this.userService.saveUser(User.builder().name(name).firstname(firstname).mail(mail).build());
+        User u = this.userService.saveUser(User.builder().name(name).firstname(firstname).mail(mail).build());
 
         return u;
+    }
+
+    @GetMapping("/delete")
+    public HttpStatus deletePerson(int id) {
+
+        return this.userService.deletePerson(id);
+    }
+
+    @GetMapping("/list")
+    public List<User> getPersonList() {
+        return this.userService.getPersonList();
     }
 }
