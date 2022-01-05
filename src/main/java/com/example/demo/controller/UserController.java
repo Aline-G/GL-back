@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Getter
-@RequestMapping("/person")
+@RequestMapping("/user")
 @RestController
 public class UserController {
     @Autowired
