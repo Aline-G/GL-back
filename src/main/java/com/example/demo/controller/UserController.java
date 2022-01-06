@@ -30,13 +30,13 @@ public class UserController {
     }
 
     @GetMapping("/delete")
-    public HttpStatus deletePerson(int id) {
+    public HttpStatus deleteUser(int id) {
 
-        return this.userService.deletePerson(id);
+        return this.userService.deleteUser(id);
     }
 
     @GetMapping("/list")
-    public List<User> getPersonList() {
-        return this.userService.getPersonList();
+    public List<User> getUserList() {
+        return this.userService.getUserList();
     }
 }

@@ -40,4 +40,12 @@ public class LineBillController {
                 .build());
         return l;
     }
+
+    @GetMapping("/delete")
+    public HttpStatus deleteLineBill(int id) throws LineBillException {
+
+        return this.lineBillService.deleteLineBill(id);
+    }
+
+
 }

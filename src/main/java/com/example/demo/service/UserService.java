@@ -15,7 +15,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<User> getPersonList() {
+    public List<User> getUserList() {
         return StreamSupport.stream(this.userRepository.findAll().spliterator(), false).collect(Collectors.toList());
     }
 
@@ -30,7 +30,7 @@ public class UserService {
 
     }
 
-    public HttpStatus deletePerson(int id) {
+    public HttpStatus deleteUser(int id) {
 
         this.userRepository.delete(this.userRepository.findById(id));
         return HttpStatus.OK;

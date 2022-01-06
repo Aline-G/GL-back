@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import com.example.demo.exception.LineBillException;
 import com.example.demo.repository.LineBillRepository;
 import com.example.demo.vo.LineBill;
@@ -32,7 +31,6 @@ public class LineBillService {
         if (this.lineBillRepository.existsById(lineBill.getId())) {
             throw new LineBillException("Id line already exist", HttpStatus.CONFLICT);
         }
-        //TODO check attributs non empty
 
         return this.lineBillRepository.save(lineBill);
 
@@ -40,6 +38,9 @@ public class LineBillService {
 
     public void checkTVA(LineBill lineBill) throws LineBillException {
         //check montant et tva
+        if( lineBill.getAmount() <= lineBill.getTva()){
+            throw new LineBillException("Amount of TVA too high",HttpStatus.BAD_REQUEST);
+        }
         //Check TVA coherence
         float tvaCalcul = lineBill.getAmount()*lineBill.getTvaPercent()/100;
         if( tvaCalcul != lineBill.getTva()){
@@ -56,6 +57,16 @@ public class LineBillService {
         }
         return lineBill;
     }
+
+    public HttpStatus deleteLineBill(int id) throws LineBillException {
+        //Check existence of this id
+        if(!lineBillRepository.existsById(id)){
+            throw new LineBillException("Id doesn't exist", HttpStatus.BAD_REQUEST);
+        }
+        this.lineBillRepository.delete(this.lineBillRepository.findById(id));
+        return HttpStatus.OK;
+    }
+
 
 
 }
