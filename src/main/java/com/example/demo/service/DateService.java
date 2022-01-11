@@ -1,5 +1,9 @@
 package com.example.demo.service;
 
+import com.example.demo.exception.DateException;
+import com.example.demo.exception.ExpenseBillException;
+import org.apache.tomcat.jni.Local;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -13,5 +17,12 @@ public class DateService {
         LocalDate parseDate;
         parseDate = LocalDate.parse(date, formatter);
         return parseDate;
+    }
+
+    public void isCoherent(LocalDate date1) throws DateException {
+        LocalDate date = LocalDate.now();
+        if(date.isAfter(date1)){
+            throw new DateException("The date of the bill is passed", HttpStatus.BAD_REQUEST);
+        }
     }
 }
