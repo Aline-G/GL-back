@@ -7,6 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 @Service
 public class LineBillService {
     @Autowired
@@ -67,6 +71,38 @@ public class LineBillService {
         return HttpStatus.OK;
     }
 
+    public LineBill getLine(int id){
+        return lineBillRepository.findById(id);
+    }
 
+    //TODO
+    public LineBill updateLine(int id) throws LineBillException {
+        LineBill lineBill = lineBillRepository.findById(id);
+        //Test if line already validated
+        if(lineBill.isValidated()){
+            throw new LineBillException("LineBill already validated", HttpStatus.CONFLICT);
+        }
 
+        //Check id exists
+        if (!this.lineBillRepository.existsById(lineBill.getId())) {
+            throw new LineBillException("Impossible to update an inexisting lineBill", HttpStatus.CONFLICT);
+        }
+        // check the existence of TVA data
+        if(lineBill.getTva() == null && lineBill.getTvaPercent() == null){
+            throw new LineBillException("Informations about TVA are missing", HttpStatus.BAD_REQUEST);
+        }
+
+        //TVA Calcul
+        if(lineBill.getTva() == null || lineBill.getTvaPercent() == null){
+            lineBill = calculTVA(lineBill);
+        }
+
+        //Check TVA
+        checkTVA(lineBill);
+        return this.lineBillRepository.save(lineBill);
+    }
+
+    public List<LineBill> getLineBillList() {
+        return StreamSupport.stream(this.lineBillRepository.findAll().spliterator(), false).collect(Collectors.toList());
+    }
 }

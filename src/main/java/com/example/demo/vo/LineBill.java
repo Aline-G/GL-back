@@ -2,10 +2,7 @@ package com.example.demo.vo;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Setter
@@ -19,10 +16,16 @@ public class LineBill {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
     private Float amount;
+    private boolean isValidated;
     private Float tvaPercent;
     private Float tva;
     private LocalDate date;
-    //TODO private Mission mission; à faire lors de l'implémentation de mission
+    @ManyToOne
+    @JoinTable(
+            name = "line_for_mission",
+            joinColumns = @JoinColumn(name = "line_id"),
+            inverseJoinColumns = @JoinColumn(name = "mission_id"))
+    private Mission mission;
     private String country;
     //TODO
     private String justificatif;
