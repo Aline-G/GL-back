@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.exception.ExpenseBillException;
 import com.example.demo.exception.LineBillException;
 import com.example.demo.repository.LineBillRepository;
 import com.example.demo.vo.LineBill;
@@ -15,6 +16,8 @@ import java.util.stream.StreamSupport;
 public class LineBillService {
     @Autowired
     LineBillRepository lineBillRepository;
+    @Autowired
+    ExpenseBillService expenseBillService;
 
     public LineBill saveLineBill(LineBill lineBill) throws LineBillException {
 
@@ -104,5 +107,20 @@ public class LineBillService {
 
     public List<LineBill> getLineBillList() {
         return StreamSupport.stream(this.lineBillRepository.findAll().spliterator(), false).collect(Collectors.toList());
+    }
+
+    // TODO verifier que c'est bien un manager qui fait la demande
+    public HttpStatus validLineBill(int lineBillId) throws LineBillException, ExpenseBillException {
+        if (!this.lineBillRepository.existsById(lineBillId)) {
+            throw new LineBillException("Impossible to update an inexisting lineBill", HttpStatus.CONFLICT);
+        }
+        LineBill lineBill = lineBillRepository.findById(lineBillId);
+        lineBill.setValidated(true);
+        lineBillRepository.save(lineBill);
+
+        if(expenseBillService.allValidated(lineBill.getIdExpenseBill())){
+            expenseBillService.setStateValidated(lineBill.getIdExpenseBill());
+        }
+        return HttpStatus.OK;
     }
 }

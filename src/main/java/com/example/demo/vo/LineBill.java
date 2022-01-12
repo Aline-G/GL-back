@@ -27,6 +27,7 @@ public class LineBill {
             inverseJoinColumns = @JoinColumn(name = "mission_id"))
     private Mission mission;
     private String country;
+    private int idExpenseBill;
     //TODO
     private String justificatif;
 

@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
+import com.example.demo.exception.ExpenseBillException;
 import com.example.demo.exception.LineBillException;
 import com.example.demo.exception.MissionException;
 import com.example.demo.service.DateService;
+import com.example.demo.service.ExpenseBillService;
 import com.example.demo.service.LineBillService;
 import com.example.demo.service.MissionService;
 import com.example.demo.vo.LineBill;
@@ -24,6 +26,8 @@ public class LineBillController {
     @Autowired
     LineBillService lineBillService;
     @Autowired
+    ExpenseBillService expenseBillService;
+    @Autowired
     MissionService missionService;
     @Autowired
     DateService dateService;
@@ -35,23 +39,29 @@ public class LineBillController {
                                       @RequestParam (required = false) Float tva,
                                       @RequestParam String date,
                                       @RequestParam int idMission,
-                                      @RequestParam String country) throws LineBillException, MissionException {
+                                      @RequestParam int idExpenseBill,
+                                      @RequestParam String country) throws LineBillException, MissionException, ExpenseBillException {
+
+        expenseBillService.existsById(idExpenseBill);
 
         LineBill l = this.lineBillService.saveLineBill(LineBill.builder()
                 .amount(amount)
                 .isValidated(false)
                 .tvaPercent(tvaPercent)
+                .idExpenseBill(idExpenseBill)
                 .mission(missionService.findById(idMission))
                 .tva(tva)
                 .date(dateService.parseDate(date))
                 .country(country)
                 .build());
+
+        expenseBillService.addLineBill(l,idExpenseBill);
+
         return l;
     }
 
     @GetMapping("/delete")
-    public HttpStatus deleteLineBill(int id) throws LineBillException {
-
+    public HttpStatus deleteLineBill(@RequestParam int id) throws LineBillException {
         return this.lineBillService.deleteLineBill(id);
     }
 
@@ -59,6 +69,13 @@ public class LineBillController {
     public List<LineBill> getLineBillList() {
         return this.lineBillService.getLineBillList();
     }
+
+    // TODO rajouter le userId dans la fonction pour s'assuerer que c'est un manager qui fait la demande
+    @GetMapping("/validation")
+    public HttpStatus validLineBill(@RequestParam int lineBillId) throws LineBillException, ExpenseBillException {
+        return this.lineBillService.validLineBill(lineBillId);
+    }
+
 
     //TODO
     @GetMapping("/update")

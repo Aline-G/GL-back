@@ -22,7 +22,7 @@ public class ExpenseBill {
     private String descritpion;
     @OneToMany
     @JoinTable(
-            name = "line_in_exepense_bill",
+            name = "line_in_expense_bill",
             joinColumns = @JoinColumn(name = "expense_id"),
             inverseJoinColumns = @JoinColumn(name = "line_id"))
     private List<LineBill> listLineBill;
