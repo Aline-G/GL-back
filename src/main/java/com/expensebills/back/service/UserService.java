@@ -45,8 +45,8 @@ public class UserService {
         return this.userRepository.findById(id);
     }
 
-    // public HttpStatus changeUserTeam(int id, Team workTeam) {
-    //     this.userRepository.findById(id).setWorkTeam(workTeam);
-    //     return HttpStatus.OK;
-    // }
+    public HttpStatus changeUserTeam(int id, Team workTeam) {
+        this.userRepository.findById(id).setWorkTeam(workTeam);
+        return HttpStatus.OK;
+    }
 }

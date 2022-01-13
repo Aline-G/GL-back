@@ -20,9 +20,9 @@ public class User {
     private String firstname;
     private String mail;
     // private Object status;
-    // @ManyToOne
-    // @JoinColumn(name = "work_team_id")
-    // private Team workTeam;
+    @ManyToOne
+    @JoinColumn(name = "work_team_id")
+    private Team workTeam;
 
 }
 

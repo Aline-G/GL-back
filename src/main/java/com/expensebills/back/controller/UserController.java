@@ -22,15 +22,15 @@ public class UserController {
     @Autowired private UserService userService;
     @Autowired private ManagerService managerService;
 
-    // @GetMapping("/new")
-    // public User createNewProfile(@RequestParam String name, @RequestParam String firstname, @RequestParam String mail,
-    //                             @RequestParam Team workTeam) {
-    //
-    //     User u = this.userService.saveUser(
-    //             User.builder().name(name).firstname(firstname).mail(mail).workTeam(workTeam).build());
-    //
-    //     return u;
-    // }
+    @GetMapping("/new")
+    public User createNewProfile(@RequestParam String name, @RequestParam String firstname, @RequestParam String mail,
+                                @RequestParam Team workTeam) {
+
+        User u = this.userService.saveUser(
+                User.builder().name(name).firstname(firstname).mail(mail).workTeam(workTeam).build());
+
+        return u;
+    }
 
     @GetMapping("/tempnew")
     public User createNewProfile(@RequestParam String name, @RequestParam String firstname, @RequestParam String mail,
