@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.repository.UserRepository;
+import com.example.demo.vo.Team;
 import com.example.demo.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,8 +13,8 @@ import java.util.stream.StreamSupport;
 
 @Service
 public class UserService {
-    @Autowired
-    private UserRepository userRepository;
+
+    @Autowired private UserRepository userRepository;
 
     public List<User> getUserList() {
         return StreamSupport.stream(this.userRepository.findAll().spliterator(), false).collect(Collectors.toList());
@@ -27,12 +28,15 @@ public class UserService {
         }
         */
         return this.userRepository.save(user);
-
     }
 
     public HttpStatus deleteUser(int id) {
-
         this.userRepository.delete(this.userRepository.findById(id));
         return HttpStatus.OK;
     }
+
+    // public HttpStatus changeUserTeam(int id, Team workTeam) {
+    //     this.userRepository.findById(id).setWorkTeam(workTeam);
+    //     return HttpStatus.OK;
+    // }
 }

@@ -30,6 +30,11 @@ public class ExpenseBill {
     private String date;
     private float amount;
     private BillStates state;
+
+    @ManyToOne
+    @JoinColumn(name = "manager_id")
+    private Manager manager;
+
     //TODO User
 
 
