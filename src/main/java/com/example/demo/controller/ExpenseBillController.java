@@ -38,7 +38,7 @@ public class ExpenseBillController {
                 .listLineBill(new ArrayList<>())
                 .name(name)
                 .date(dateService.parseDate(date))
-                .descritpion(description)
+                .description(description)
                 .state(BillStates.DRAFT)
                 .build());
 

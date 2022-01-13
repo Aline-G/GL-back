@@ -19,7 +19,7 @@ public class ExpenseBill {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
     private String name;
-    private String descritpion;
+    private String description;
     @OneToMany
     @JoinTable(
             name = "line_in_expense_bill",
