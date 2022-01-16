@@ -20,6 +20,7 @@ public class LineBill {
     private Float tvaPercent;
     private Float tva;
     private LocalDate date;
+    private String description;
     @ManyToOne
     @JoinTable(
             name = "line_for_mission",
@@ -28,7 +29,9 @@ public class LineBill {
     private Mission mission;
     private String country;
     private int idExpenseBill;
-    //TODO
+    //TODO justificatif
     private String justificatif;
+
+    //TODO rajouter une descritpion dans lineBill
 
 }
