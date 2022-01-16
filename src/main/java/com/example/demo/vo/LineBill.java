@@ -32,6 +32,4 @@ public class LineBill {
     //TODO justificatif
     private String justificatif;
 
-    //TODO rajouter une descritpion dans lineBill
-
 }
