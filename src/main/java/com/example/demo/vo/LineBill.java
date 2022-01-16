@@ -20,6 +20,7 @@ public class LineBill {
     private Float tvaPercent;
     private Float tva;
     private LocalDate date;
+    private String description;
     @ManyToOne
     @JoinTable(
             name = "line_for_mission",

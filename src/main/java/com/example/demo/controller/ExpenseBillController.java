@@ -56,6 +56,7 @@ public class ExpenseBillController {
         return this.expenseBillService.getExpenseBillList();
     }
 
+    //TODO verifier que c'est bien un manager qui fait la demande
     @GetMapping("/validation")
     public HttpStatus validExpenseBill(@RequestParam int expenseBillId) throws LineBillException, ExpenseBillException {
         return this.expenseBillService.validExpenseBill(expenseBillId);

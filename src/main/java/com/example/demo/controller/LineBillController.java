@@ -38,6 +38,7 @@ public class LineBillController {
                                       @RequestParam (required = false) Float tvaPercent,
                                       @RequestParam (required = false) Float tva,
                                       @RequestParam String date,
+                                      @RequestParam String description,
                                       @RequestParam int idMission,
                                       @RequestParam int idExpenseBill,
                                       @RequestParam String country) throws LineBillException, MissionException, ExpenseBillException {
@@ -49,6 +50,7 @@ public class LineBillController {
                 .isValidated(false)
                 .tvaPercent(tvaPercent)
                 .idExpenseBill(idExpenseBill)
+                .description(description)
                 .mission(missionService.findById(idMission))
                 .tva(tva)
                 .date(dateService.parseDate(date))
@@ -77,7 +79,7 @@ public class LineBillController {
     }
 
 
-    //TODO
+    //TODO update et penser a mettre à jour les parametres de la fonction
     @GetMapping("/update")
     public LineBill updateLineBill(@RequestParam int id,
                                    @RequestParam (required = false)Float amount,
@@ -86,7 +88,6 @@ public class LineBillController {
                                    @RequestParam (required = false)String date,
                                    @RequestParam (required = false) String country) throws LineBillException {
         LineBill lineBill = lineBillService.getLine(id);
-
 
         return lineBillService.updateLine(id);
     }
