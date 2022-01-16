@@ -12,3 +12,12 @@ VALUES (1,500, 'France','2022-12-06',null,12,2.4,TRUE, 2),
        (2,300, 'France','2022-01-06',null,12,2.4,FALSE, 1);
 
 
+INSERT INTO line_in_expense_bill(expense_id,line_id)
+VALUES (1,2),
+       (2,1);
+
+INSERT INTO line_for_mission(mission_id,line_id)
+VALUES (1,2),
+       (2,1);
+
+
