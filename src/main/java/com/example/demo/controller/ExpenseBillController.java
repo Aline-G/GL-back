@@ -33,6 +33,14 @@ public class ExpenseBillController {
     public ExpenseBill createNewExpenseBill(@RequestParam String name,
                                          @RequestParam String description,
                                          @RequestParam String date) throws ExpenseBillException, DateException {
+        /*
+         * Function that creates a new expenseBill in the data base.
+         * When an bill is created its state is DRAFT
+         * @Parameter name : The name of the Bill
+         * @Parameter description : a comment about the bill for the manager
+         * @Parameter date : the mounth of the bill
+         * @Returns : the object ExpenseBill that was created.
+         * */
 
         ExpenseBill e = this.expenseBillService.saveExpenseBill(ExpenseBill.builder()
                 .amount(0)

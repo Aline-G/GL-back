@@ -78,7 +78,7 @@ public class LineBillService {
         return lineBillRepository.findById(id);
     }
 
-    //TODO
+    //TODO update
     public LineBill updateLine(int id) throws LineBillException {
         LineBill lineBill = lineBillRepository.findById(id);
         //Test if line already validated

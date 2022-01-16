@@ -43,6 +43,20 @@ public class LineBillController {
                                       @RequestParam int idExpenseBill,
                                       @RequestParam String country) throws LineBillException, MissionException, ExpenseBillException {
 
+        /*
+         * Function that creates a new lineBill in the data base.
+         * @Parameter amount : The total amount of the line free of tva
+         * @Parameter tvaPercent : (OPTIONAL) the percentage of the amount in the tva
+         * @Parameter tva : (OPTIONAL) the amount of tva to pay in addition of the amount
+         * @Parameter date : The date of the line. The date must be at this format : "yyyy-mm-dd"
+         * @Parameter description : a comment about the line for the manager
+         * @Parameter idMission : the mission which the line will be related to.
+         *                        The id of the mission has to be related to an already existing mission in the data base.
+         * @Parameter idExpenseBill : the expenseBill which the line will be related to.
+         *                        The id of the bill has to be related to an already existing expenseBill in the data base.
+         * @Returns : the object ExpenseBill that was created.
+         * */
+
         expenseBillService.existsById(idExpenseBill);
 
         LineBill l = this.lineBillService.saveLineBill(LineBill.builder()
