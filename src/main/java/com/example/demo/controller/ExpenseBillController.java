@@ -3,6 +3,7 @@ package com.example.demo.controller;
 
 import com.example.demo.exception.DateException;
 import com.example.demo.exception.ExpenseBillException;
+import com.example.demo.exception.LineBillException;
 import com.example.demo.service.DateService;
 import com.example.demo.service.ExpenseBillService;
 import com.example.demo.vo.BillStates;
@@ -55,7 +56,10 @@ public class ExpenseBillController {
         return this.expenseBillService.getExpenseBillList();
     }
 
-    //TODO validation de toute la note de frais
+    @GetMapping("/validation")
+    public HttpStatus validExpenseBill(@RequestParam int expenseBillId) throws LineBillException, ExpenseBillException {
+        return this.expenseBillService.validExpenseBill(expenseBillId);
+    }
 
 
     // TODO quand utilisateur sera codé faire des fonction de get en fonction de UserID passe en parametre

@@ -28,7 +28,9 @@ public class LineBill {
     private Mission mission;
     private String country;
     private int idExpenseBill;
-    //TODO
+    //TODO justificatif
     private String justificatif;
+
+    //TODO rajouter une descritpion dans lineBill
 
 }

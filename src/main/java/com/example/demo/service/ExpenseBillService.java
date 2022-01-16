@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.exception.DateException;
 import com.example.demo.exception.ExpenseBillException;
+import com.example.demo.exception.LineBillException;
 import com.example.demo.repository.ExpenseBillRepository;
 import com.example.demo.vo.BillStates;
 import com.example.demo.vo.ExpenseBill;
@@ -9,6 +10,7 @@ import com.example.demo.vo.LineBill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -84,6 +86,21 @@ public class ExpenseBillService {
         ExpenseBill expenseBill = expenseBillRepository.findById(expenseBillId);
         expenseBill.setState(BillStates.VALIDATED);
         expenseBillRepository.save(expenseBill);
+    }
+
+
+    public HttpStatus validExpenseBill(int expenseBillId) throws LineBillException, ExpenseBillException {
+        if (!this.expenseBillRepository.existsById(expenseBillId)) {
+            throw new ExpenseBillException("Impossible to update an inexisting expenseBill", HttpStatus.CONFLICT);
+        }
+        ExpenseBill expenseBill = expenseBillRepository.findById(expenseBillId);
+        List<LineBill> listLine = expenseBill.getListLineBill();
+
+        for(LineBill lineBill : listLine){
+            lineBill.setValidated(true);
+        }
+        setStateValidated(expenseBillId);
+        return(HttpStatus.OK);
     }
 
     //TODO penser a faire une fonction qui gere le moment ou le colaborateur demande a valider sa note
