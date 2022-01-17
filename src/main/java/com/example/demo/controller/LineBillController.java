@@ -86,6 +86,11 @@ public class LineBillController {
         return this.lineBillService.getLineBillList();
     }
 
+    @GetMapping("/listbyexpenseid")
+    public List<LineBill> getLineBillListByExpenseId(@RequestParam int id) {
+        return this.lineBillService.getLineBillListByIdExpense(id);
+    }
+
     // TODO rajouter le userId dans la fonction pour s'assuerer que c'est un manager qui fait la demande
     @GetMapping("/validation")
     public HttpStatus validLineBill(@RequestParam int lineBillId) throws LineBillException, ExpenseBillException {

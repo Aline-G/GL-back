@@ -109,6 +109,10 @@ public class LineBillService {
         return StreamSupport.stream(this.lineBillRepository.findAll().spliterator(), false).collect(Collectors.toList());
     }
 
+    public List<LineBill> getLineBillListByIdExpense(int id) {
+        return StreamSupport.stream(this.lineBillRepository.findAllByIdExpenseBill(id).spliterator(), false).collect(Collectors.toList());
+    }
+
     // TODO verifier que c'est bien un manager qui fait la demande
     public HttpStatus validLineBill(int lineBillId) throws LineBillException, ExpenseBillException {
         if (!this.lineBillRepository.existsById(lineBillId)) {
