@@ -103,6 +103,16 @@ public class ExpenseBillService {
         return(HttpStatus.OK);
     }
 
+    public void checkState(int idExpenseBill) throws ExpenseBillException {
+        ExpenseBill expense = this.expenseBillRepository.findById(idExpenseBill);
+        if(expense.getState()==BillStates.VALIDATED){
+            throw new ExpenseBillException("This expense bill already validated", HttpStatus.CONFLICT);
+        }else if (expense.getState()==BillStates.WAITING){
+            throw new ExpenseBillException("This expense bill is waiting for validation and so can't be modified", HttpStatus.CONFLICT);
+        }
+
+    }
+
     //TODO penser a faire une fonction qui gere le moment ou le colaborateur demande a valider sa note
 
 }

@@ -17,6 +17,7 @@ public class LineBill {
     private int id;
     private Float amount;
     private boolean isValidated;
+    private LineBillCategory category;
     private Float tvaPercent;
     private Float tva;
     private LocalDate date;
