@@ -17,6 +17,7 @@ public class Advance {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
     private float amount;
+    private String name;
     private String description;
     private BillStates state;
 
