@@ -129,9 +129,15 @@ public class ExpenseBillService {
 
     //TODO penser a faire une fonction qui gere le moment ou le colaborateur demande a valider sa note
 
-    /*public ExpenseBill sendForValidation(int expenseBillId) throws LineBillException, ExpenseBillException {
-        return this.
-    }*/
+    public ExpenseBill sendForValidation(int expenseBillId) throws LineBillException, ExpenseBillException {
+        if (!this.expenseBillRepository.existsById(expenseBillId)) {
+            throw new ExpenseBillException("Impossible to update an inexisting expenseBill", HttpStatus.CONFLICT);
+        }
+        ExpenseBill expenseBill = expenseBillRepository.findById(expenseBillId);
+        expenseBill.setState(BillStates.WAITING);
+        expenseBillRepository.save(expenseBill);
+        return expenseBill;
+    }
 
     public int getNumberBillsNonValidated() {
         int res = 0;
