@@ -31,6 +31,7 @@ public class AdvanceController {
     @GetMapping("/new")
     public Advance createNewAdvance(@RequestParam float amount,
                                         @RequestParam String description,
+                                        @RequestParam String name,
                                         @RequestParam int idMission) throws  MissionException, AdvanceException {
         /*
         * Function that creates a new advance in the data base.
@@ -46,6 +47,7 @@ public class AdvanceController {
         Advance a = this.advanceService.saveAdvance(Advance.builder()
                 .amount(amount)
                 .description(description)
+                .name(name)
                 .mission(missionService.findById(idMission))
                 .state(BillStates.DRAFT)
                 .build());
@@ -54,7 +56,7 @@ public class AdvanceController {
     }
 
     @GetMapping("/list")
-    public List<Advance> getExpenseBillList() {
+    public List<Advance> getAdvanceBillList() {
         return this.advanceService.getAdvanceList();
     }
 
