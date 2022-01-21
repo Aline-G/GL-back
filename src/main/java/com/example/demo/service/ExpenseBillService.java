@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.example.demo.exception.DateException;
 import com.example.demo.exception.ExpenseBillException;
 import com.example.demo.exception.LineBillException;
@@ -119,8 +120,11 @@ public class ExpenseBillService {
         float total = 0;
         List<ExpenseBill> list = getExpenseBillList();
         for (ExpenseBill e : list){
-            if(e.getState() == BillStates.DRAFT && e.getState() == BillStates.WAITING){
+            if(e.getState() == BillStates.DRAFT || e.getState() == BillStates.WAITING){
                 total+=e.getAmount();
+            }
+            else {
+                System.out.println(e.getState());
             }
         }
         return total;
