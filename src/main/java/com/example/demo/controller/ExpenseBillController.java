@@ -75,6 +75,18 @@ public class ExpenseBillController {
         return this.expenseBillService.getTotal();
     }
 
+    @GetMapping("/numberNotesNonValidated")
+    public int getNumberBillsNonValidated() {
+        return this.expenseBillService.getNumberBillsNonValidated();
+    }
+
+
+
+    /*public ExpenseBill sendForValidation(int expenseBillId) throws LineBillException, ExpenseBillException {
+        return this.expenseBillService.sendForValidation(expenseBillId);
+    }*/
 
     // TODO quand utilisateur sera codé faire des fonction de get en fonction de UserID passe en parametre
+
+
 }

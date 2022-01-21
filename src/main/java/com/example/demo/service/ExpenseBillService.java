@@ -123,13 +123,24 @@ public class ExpenseBillService {
             if(e.getState() == BillStates.DRAFT || e.getState() == BillStates.WAITING){
                 total+=e.getAmount();
             }
-            else {
-                System.out.println(e.getState());
-            }
         }
         return total;
     }
 
     //TODO penser a faire une fonction qui gere le moment ou le colaborateur demande a valider sa note
 
+    /*public ExpenseBill sendForValidation(int expenseBillId) throws LineBillException, ExpenseBillException {
+        return this.
+    }*/
+
+    public int getNumberBillsNonValidated() {
+        int res = 0;
+        List<ExpenseBill> list = getExpenseBillList();
+        for (ExpenseBill e : list){
+            if(e.getState() == BillStates.DRAFT || e.getState() == BillStates.WAITING){
+                res+=1;
+            }
+        }
+        return res;
+    }
 }
