@@ -119,7 +119,9 @@ public class ExpenseBillService {
         float total = 0;
         List<ExpenseBill> list = getExpenseBillList();
         for (ExpenseBill e : list){
-            total+=e.getAmount();
+            if(e.getState() == BillStates.DRAFT && e.getState() == BillStates.WAITING){
+                total+=e.getAmount();
+            }
         }
         return total;
     }
