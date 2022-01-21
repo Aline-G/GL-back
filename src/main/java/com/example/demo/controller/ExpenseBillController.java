@@ -70,6 +70,11 @@ public class ExpenseBillController {
         return this.expenseBillService.validExpenseBill(expenseBillId);
     }
 
+    @GetMapping("/total")
+    public float totalExpenseBill() {
+        return this.expenseBillService.getTotal();
+    }
+
 
     // TODO quand utilisateur sera codé faire des fonction de get en fonction de UserID passe en parametre
 }

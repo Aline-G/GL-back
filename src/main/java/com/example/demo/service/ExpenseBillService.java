@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.sound.sampled.Line;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -111,6 +112,16 @@ public class ExpenseBillService {
             throw new ExpenseBillException("This expense bill is waiting for validation and so can't be modified", HttpStatus.CONFLICT);
         }
 
+    }
+
+    public float getTotal() {
+
+        float total = 0;
+        List<ExpenseBill> list = getExpenseBillList();
+        for (ExpenseBill e : list){
+            total+=e.getAmount();
+        }
+        return total;
     }
 
     //TODO penser a faire une fonction qui gere le moment ou le colaborateur demande a valider sa note
