@@ -1,8 +1,11 @@
 package com.expensebills.back.controller;
 
+import com.expensebills.back.exception.TeamException;
 import com.expensebills.back.service.ManagerService;
+import com.expensebills.back.service.TeamService;
 import com.expensebills.back.service.UserService;
 import com.expensebills.back.vo.Manager;
+import com.expensebills.back.vo.Team;
 import com.expensebills.back.vo.User;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +24,19 @@ public class UserController {
 
     @Autowired private UserService userService;
     @Autowired private ManagerService managerService;
+    @Autowired private TeamService teamService;
 
     @GetMapping("/new")
     public User createNewProfile(@RequestParam String name, @RequestParam String firstname, @RequestParam String mail,
-                                @RequestParam Team workTeam) {
+                                 @RequestParam int idTeam) {
 
-        User u = this.userService.saveUser(
-                User.builder().name(name).firstname(firstname).mail(mail).workTeam(workTeam).build());
+        User u = null;
+        try {
+            u = this.userService.saveUser(User.builder().name(name).firstname(firstname).mail(mail)
+                                              .workTeam(this.teamService.findById(idTeam)).build());
+        } catch (TeamException e) {
+            e.printStackTrace();
+        }
 
         return u;
     }
