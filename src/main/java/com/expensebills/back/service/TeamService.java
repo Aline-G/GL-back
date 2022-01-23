@@ -3,7 +3,6 @@ package com.expensebills.back.service;
 import com.expensebills.back.exception.TeamException;
 import com.expensebills.back.repository.TeamRepository;
 import com.expensebills.back.vo.Team;
-import com.expensebills.back.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
