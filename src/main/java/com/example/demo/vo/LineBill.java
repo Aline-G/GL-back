@@ -22,6 +22,12 @@ public class LineBill {
     private Float tva;
     private LocalDate date;
     private String description;
+    private int km;
+    private String restoPlace;
+    private String hebergementPlace;
+    private String vehicle;
+    private String guestsName;
+
     @ManyToOne
     @JoinTable(
             name = "line_for_mission",
