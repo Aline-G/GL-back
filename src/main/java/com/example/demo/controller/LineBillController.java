@@ -43,7 +43,12 @@ public class LineBillController {
                                       @RequestParam String description,
                                       @RequestParam int idMission,
                                       @RequestParam int idExpenseBill,
-                                      @RequestParam String country) throws LineBillException, MissionException, ExpenseBillException {
+                                      @RequestParam String country,
+                                      @RequestParam int km,
+                                      @RequestParam String restoPlace,
+                                      @RequestParam String hebergementPlace,
+                                      @RequestParam String vehicle,
+                                      @RequestParam String guestsName) throws LineBillException, MissionException, ExpenseBillException {
 
         /*
          * Function that creates a new lineBill in the database.
@@ -74,6 +79,11 @@ public class LineBillController {
                 .tva(tva)
                 .date(dateService.parseDate(date))
                 .country(country)
+                .km(km)
+                .restoPlace(restoPlace)
+                .hebergementPlace(hebergementPlace)
+                .vehicle(vehicle)
+                .guestsName(guestsName)
                 .build());
 
         expenseBillService.addLineBill(l,idExpenseBill);
