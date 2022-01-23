@@ -149,4 +149,11 @@ public class ExpenseBillService {
         }
         return res;
     }
+
+    public ExpenseBill getExpenseBillById(int id) throws ExpenseBillException {
+        if (!this.expenseBillRepository.existsById(id)) {
+            throw new ExpenseBillException("this expenseBill does not exists", HttpStatus.CONFLICT);
+        }
+        return this.expenseBillRepository.findById(id);
+    }
 }
