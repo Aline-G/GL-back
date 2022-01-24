@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.exception.ExpenseBillException;
+import com.example.demo.exception.FunctionalException;
 import com.example.demo.exception.LineBillException;
 import com.example.demo.exception.MissionException;
 import com.example.demo.service.DateService;
@@ -12,10 +13,8 @@ import com.example.demo.vo.LineBillCategory;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -124,5 +123,15 @@ public class LineBillController {
         LineBill lineBill = lineBillService.getLine(id);
 
         return lineBillService.updateLine(id);
+    }
+
+    //TRAITEMENT DES EXCEPTIONS
+    @ExceptionHandler(FunctionalException.class)
+    public ResponseEntity<String> handleLineBillException(
+            FunctionalException exception
+    ) {
+        return ResponseEntity
+                .status(exception.getStatus())
+                .body(exception.getMessage());
     }
 }

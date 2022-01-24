@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.exception.FunctionalException;
 import com.example.demo.exception.MissionException;
 import com.example.demo.service.DateService;
 import com.example.demo.service.MissionService;
@@ -7,10 +8,8 @@ import com.example.demo.vo.Mission;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -46,5 +45,16 @@ public class MissionController {
     @GetMapping("/list")
     public List<Mission> getUserList() {
         return this.missionService.getMissionList();
+    }
+
+
+    //TRAITEMENT DES EXCEPTIONS
+    @ExceptionHandler(FunctionalException.class)
+    public ResponseEntity<String> handleMissionException(
+            FunctionalException exception
+    ) {
+        return ResponseEntity
+                .status(exception.getStatus())
+                .body(exception.getMessage());
     }
 }

@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.exception.AdvanceException;
+import com.example.demo.exception.FunctionalException;
 import com.example.demo.exception.MissionException;
 import com.example.demo.service.AdvanceService;
 import com.example.demo.service.DateService;
@@ -10,10 +11,8 @@ import com.example.demo.vo.BillStates;
 import com.example.demo.vo.ExpenseBill;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -60,5 +59,13 @@ public class AdvanceController {
         return this.advanceService.getAdvanceList();
     }
 
-
+    //TRAITEMENT DES EXCEPTIONS
+    @ExceptionHandler(FunctionalException.class)
+    public ResponseEntity<String> handleAdvanceException(
+            FunctionalException exception
+    ) {
+        return ResponseEntity
+                .status(exception.getStatus())
+                .body(exception.getMessage());
+    }
 }
