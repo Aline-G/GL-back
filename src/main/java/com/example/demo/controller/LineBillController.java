@@ -43,11 +43,11 @@ public class LineBillController {
                                       @RequestParam int idMission,
                                       @RequestParam int idExpenseBill,
                                       @RequestParam String country,
-                                      @RequestParam int km,
-                                      @RequestParam String restoPlace,
-                                      @RequestParam String hebergementPlace,
-                                      @RequestParam String vehicle,
-                                      @RequestParam String guestsName) throws LineBillException, MissionException, ExpenseBillException {
+                                      @RequestParam (required = false) Integer km,
+                                      @RequestParam (required = false) String restoPlace,
+                                      @RequestParam (required = false) String hebergementPlace,
+                                      @RequestParam (required = false) String vehicle,
+                                      @RequestParam (required = false) String guestsName) throws LineBillException, MissionException, ExpenseBillException {
 
         /*
          * Function that creates a new lineBill in the database.
@@ -66,6 +66,9 @@ public class LineBillController {
 
         this.expenseBillService.existsById(idExpenseBill);
         this.expenseBillService.checkState(idExpenseBill);
+        if(km == null){
+            km = 0;
+        }
 
         LineBill l = this.lineBillService.saveLineBill(LineBill.builder()
                 .amount(amount)
