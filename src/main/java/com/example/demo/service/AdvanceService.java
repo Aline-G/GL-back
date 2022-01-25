@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.exception.AdvanceException;
 import com.example.demo.exception.ExpenseBillException;
+import com.example.demo.exception.LineBillException;
 import com.example.demo.repository.AdvanceRepository;
 import com.example.demo.vo.Advance;
 import com.example.demo.vo.BillStates;
@@ -40,5 +41,14 @@ public class AdvanceService {
         advance.setState(BillStates.WAITING);
         advanceRepository.save(advance);
         return advance;
+    }
+
+    public HttpStatus deleteAdvance(int id) throws AdvanceException {
+        //Check existence of this id
+        if(!advanceRepository.existsById(id)){
+            throw new AdvanceException("Id doesn't exist", HttpStatus.BAD_REQUEST);
+        }
+        this.advanceRepository.delete(this.advanceRepository.findById(id));
+        return HttpStatus.OK;
     }
 }

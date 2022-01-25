@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.exception.AdvanceException;
 import com.example.demo.exception.FunctionalException;
+import com.example.demo.exception.LineBillException;
 import com.example.demo.exception.MissionException;
 import com.example.demo.service.AdvanceService;
 import com.example.demo.service.DateService;
@@ -11,6 +12,7 @@ import com.example.demo.vo.BillStates;
 import com.example.demo.vo.ExpenseBill;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,6 +54,11 @@ public class AdvanceController {
                 .build());
 
         return a;
+    }
+
+    @GetMapping("/delete")
+    public HttpStatus deleteLineBill(@RequestParam int id) throws AdvanceException {
+        return this.advanceService.deleteAdvance(id);
     }
 
     @GetMapping("/list")
