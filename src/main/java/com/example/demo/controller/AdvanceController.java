@@ -59,6 +59,13 @@ public class AdvanceController {
         return this.advanceService.getAdvanceList();
     }
 
+
+    @GetMapping("/askforvalidation")
+    public Advance askForValidation(int id) throws AdvanceException {
+        return this.advanceService.askForValidation(id);
+    }
+
+
     //TRAITEMENT DES EXCEPTIONS
     @ExceptionHandler(FunctionalException.class)
     public ResponseEntity<String> handleAdvanceException(
