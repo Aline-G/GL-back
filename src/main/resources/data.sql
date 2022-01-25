@@ -11,6 +11,10 @@ INSERT INTO line_bill (id,amount,category,country,date,justificatif,tva,tva_perc
 VALUES (1,500,0,'France','2022-12-06',null,12,2.4,TRUE, 2, 'Invitation des clients au restaurant',0, 'mc DO', '', '','jean dubois'),
        (2,300,3,'France','2022-01-06',null,12,2.4,FALSE, 1,'Achat d un robot netoyant pour vider les poubelles automatiquement', 0,'', '','','');
 
+INSERT INTO advance (id,amount,description,name,state)
+VALUES (1,1000,'Pour payer des vacances pour les clients','vacances',0),
+       (2,300,'pour payer des femmes de ménage','menage',1);
+
 
 
 INSERT INTO line_in_expense_bill(expense_id,line_id)
@@ -18,6 +22,11 @@ VALUES (1,2),
        (2,1);
 
 INSERT INTO line_for_mission(mission_id,line_id)
+VALUES (1,2),
+       (2,1);
+
+
+INSERT INTO advance_for_mission(mission_id,advance_id)
 VALUES (1,2),
        (2,1);
 
