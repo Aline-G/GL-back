@@ -73,6 +73,10 @@ public class AdvanceController {
     }
 
 
+
+
+
+
     //TRAITEMENT DES EXCEPTIONS
     @ExceptionHandler(FunctionalException.class)
     public ResponseEntity<String> handleAdvanceException(
