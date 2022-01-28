@@ -42,11 +42,14 @@ public class ExpenseBillController {
          * @Returns : the object ExpenseBill that was created.
          * */
 
+        expenseBillService.verifDate(date);
+
+
         ExpenseBill e = this.expenseBillService.saveExpenseBill(ExpenseBill.builder()
                 .amount(0)
                 .listLineBill(new ArrayList<>())
                 .name(name)
-                .date(dateService.parseDate(date))
+                .date(date)
                 .description(description)
                 .state(BillStates.DRAFT)
                 .build());
