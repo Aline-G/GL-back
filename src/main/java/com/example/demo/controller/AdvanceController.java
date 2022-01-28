@@ -74,9 +74,10 @@ public class AdvanceController {
         return this.advanceService.askForValidation(id);
     }
 
-
-
-
+    @GetMapping("/validation")
+    public Advance validation(@RequestParam int id) throws AdvanceException {
+        return this.advanceService.validation(id);
+    }
 
 
     //TRAITEMENT DES EXCEPTIONS
