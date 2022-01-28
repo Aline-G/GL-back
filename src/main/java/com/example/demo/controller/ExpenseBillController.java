@@ -48,6 +48,7 @@ public class ExpenseBillController {
         ExpenseBill e = this.expenseBillService.saveExpenseBill(ExpenseBill.builder()
                 .amount(0)
                 .listLineBill(new ArrayList<>())
+                .listAdvance(new ArrayList<>())
                 .name(name)
                 .date(date)
                 .description(description)
