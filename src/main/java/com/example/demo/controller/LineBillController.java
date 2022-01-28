@@ -43,16 +43,15 @@ public class LineBillController {
                                       @RequestParam int idMission,
                                       @RequestParam int idExpenseBill,
                                       @RequestParam String country,
-                                      @RequestParam (required = false) String paymentMethod,
-                                      @RequestParam (required = false) Integer km,
-                                      @RequestParam (required = false) String restoPlace,
-                                      @RequestParam (required = false) String hebergementPlace,
-                                      @RequestParam (required = false) String vehicle,
-                                      @RequestParam (required = false) String conveyance,
-                                      @RequestParam (required = false) Integer fiscalHorsepower,
-                                      @RequestParam (required = false) String registrationNumber,
-                                      @RequestParam (required = false) String guestsName) throws LineBillException, MissionException, ExpenseBillException {
-
+                                      @RequestParam  String paymentMethod,
+                                      @RequestParam  Integer km,
+                                      @RequestParam  String restoPlace,
+                                      @RequestParam  String hebergementPlace,
+                                      @RequestParam  String vehicle,
+                                      @RequestParam  String conveyance,
+                                      @RequestParam  Integer fiscalHorsepower,
+                                      @RequestParam  String registrationNumber,
+                                      @RequestParam  String guestsName) throws LineBillException, MissionException, ExpenseBillException {
         /*
          * Function that creates a new lineBill in the database.
          * @Parameter amount : The total amount of the line free of tva
@@ -70,12 +69,7 @@ public class LineBillController {
 
         this.expenseBillService.existsById(idExpenseBill);
         this.expenseBillService.checkState(idExpenseBill);
-        if(km == null){
-            km = 0;
-        }
-        if(fiscalHorsepower == null){
-            fiscalHorsepower = 0;
-        }
+
 
         LineBill l = this.lineBillService.saveLineBill(LineBill.builder()
                 .amount(amount)
