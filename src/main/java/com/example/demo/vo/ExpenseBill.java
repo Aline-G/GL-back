@@ -27,7 +27,7 @@ public class ExpenseBill {
             inverseJoinColumns = @JoinColumn(name = "line_id"))
     private List<LineBill> listLineBill;
     // TODO liste d'avances
-    private LocalDate date; //TODO format de la date pour les mois
+    private String date;
     private float amount;
     private BillStates state;
     //TODO User

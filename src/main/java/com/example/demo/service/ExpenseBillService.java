@@ -28,7 +28,7 @@ public class ExpenseBillService {
 
     public ExpenseBill saveExpenseBill(ExpenseBill expenseBill) throws ExpenseBillException, DateException {
 
-        dateService.isCoherent(expenseBill.getDate());
+        //dateService.isCoherent(expenseBill.getDate());
 
         if (this.expenseBillRepository.existsById(expenseBill.getId())) {
             throw new ExpenseBillException("Id of the bill already exists", HttpStatus.CONFLICT);
@@ -155,5 +155,19 @@ public class ExpenseBillService {
             throw new ExpenseBillException("this expenseBill does not exists", HttpStatus.CONFLICT);
         }
         return this.expenseBillRepository.findById(id);
+    }
+
+
+    public void verifDate(String date) throws ExpenseBillException {
+        List<ExpenseBill> list = getExpenseBillList();
+        for(ExpenseBill e : list){
+            if(e.getDate().equals(date)){
+                throw new ExpenseBillException("A bill already has this date",HttpStatus.CONFLICT);
+            }
+        }
+    }
+
+    public int getMounth(String date){
+        return Integer.parseInt(date.substring(5, 7));
     }
 }
