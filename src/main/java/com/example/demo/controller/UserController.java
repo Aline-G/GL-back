@@ -49,7 +49,7 @@ public class UserController {
         return this.userService.deleteUser(id);
     }
 
-    @GetMapping("/is-manager")
+    @GetMapping("/ismanager")
     public boolean isManager(@RequestParam int id) {
         return this.userService.getUser(id) instanceof Manager;
     }
