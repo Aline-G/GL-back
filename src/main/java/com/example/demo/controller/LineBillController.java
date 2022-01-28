@@ -35,7 +35,7 @@ public class LineBillController {
 
     @GetMapping("/new")
     public LineBill createNewLineBill(@RequestParam Float amount,
-                                      @RequestParam (required = false) Float tvaPercent,
+                                      @RequestParam (required = false) Float amountWithoutTaxes,
                                       @RequestParam (required = false) Float tva,
                                       @RequestParam LineBillCategory category,
                                       @RequestParam String date,
@@ -47,7 +47,8 @@ public class LineBillController {
                                       @RequestParam (required = false) String restoPlace,
                                       @RequestParam (required = false) String hebergementPlace,
                                       @RequestParam (required = false) String vehicle,
-                                      @RequestParam (required = false) Integer fiscal_horsepower,
+                                      @RequestParam (required = false) Integer fiscalHorsepower,
+                                      @RequestParam (required = false) String registrationNumber,
                                       @RequestParam (required = false) String guestsName) throws LineBillException, MissionException, ExpenseBillException {
 
         /*
@@ -70,14 +71,14 @@ public class LineBillController {
         if(km == null){
             km = 0;
         }
-        if(fiscal_horsepower == null){
-            fiscal_horsepower = 0;
+        if(fiscalHorsepower == null){
+            fiscalHorsepower = 0;
         }
 
         LineBill l = this.lineBillService.saveLineBill(LineBill.builder()
                 .amount(amount)
                 .isValidated(false)
-                .tvaPercent(tvaPercent)
+                .amountWithoutTaxes(amountWithoutTaxes)
                 .category(category)
                 .idExpenseBill(idExpenseBill)
                 .description(description)
@@ -85,8 +86,9 @@ public class LineBillController {
                 .tva(tva)
                 .date(dateService.parseDate(date))
                 .country(country)
-                .fiscal_horsepower(fiscal_horsepower)
+                .fiscalHorsepower(fiscalHorsepower)
                 .km(km)
+                .registrationNumber(registrationNumber)
                 .restoPlace(restoPlace)
                 .hebergementPlace(hebergementPlace)
                 .vehicle(vehicle)
@@ -111,6 +113,12 @@ public class LineBillController {
     @GetMapping("/listbyexpenseid")
     public List<LineBill> getLineBillListByExpenseId(@RequestParam int id) {
         return this.lineBillService.getLineBillListByIdExpense(id);
+    }
+
+    @GetMapping("/calculamount")
+    public double getAmountMealExpense(@RequestParam Float nbKm,
+                                       @RequestParam int nbFiscalHorsepower) throws LineBillException {
+        return this.lineBillService.calculAmount(nbKm,nbFiscalHorsepower);
     }
 
     // TODO rajouter le userId dans la fonction pour s'assuerer que c'est un manager qui fait la demande

@@ -18,12 +18,13 @@ public class LineBill {
     private Float amount;
     private boolean isValidated;
     private LineBillCategory category;
-    private Float tvaPercent;
+    private Float amountWithoutTaxes;
     private Float tva;
     private LocalDate date;
     private String description;
     private int km;
-    private int fiscal_horsepower;
+    private int fiscalHorsepower;
+    private String registrationNumber;
     private String restoPlace;
     private String hebergementPlace;
     private String vehicle;
