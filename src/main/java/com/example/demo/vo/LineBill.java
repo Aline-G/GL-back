@@ -25,6 +25,7 @@ public class LineBill {
     private int km;
     private int fiscalHorsepower;
     private String registrationNumber;
+    private String conveyance;
     private String restoPlace;
     private String hebergementPlace;
     private String vehicle;

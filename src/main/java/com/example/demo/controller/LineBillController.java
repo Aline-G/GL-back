@@ -47,6 +47,7 @@ public class LineBillController {
                                       @RequestParam (required = false) String restoPlace,
                                       @RequestParam (required = false) String hebergementPlace,
                                       @RequestParam (required = false) String vehicle,
+                                      @RequestParam (required = false) String conveyance,
                                       @RequestParam (required = false) Integer fiscalHorsepower,
                                       @RequestParam (required = false) String registrationNumber,
                                       @RequestParam (required = false) String guestsName) throws LineBillException, MissionException, ExpenseBillException {
@@ -89,6 +90,7 @@ public class LineBillController {
                 .fiscalHorsepower(fiscalHorsepower)
                 .km(km)
                 .registrationNumber(registrationNumber)
+                .conveyance(conveyance)
                 .restoPlace(restoPlace)
                 .hebergementPlace(hebergementPlace)
                 .vehicle(vehicle)
