@@ -35,6 +35,10 @@ public class UserService {
         return HttpStatus.OK;
     }
 
+    public User getUser(int id) {
+        return this.userRepository.findById(id);
+    }
+
     // public HttpStatus changeUserTeam(int id, Team workTeam) {
     //     this.userRepository.findById(id).setWorkTeam(workTeam);
     //     return HttpStatus.OK;
