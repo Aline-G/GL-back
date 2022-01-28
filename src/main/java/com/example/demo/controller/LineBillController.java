@@ -47,6 +47,7 @@ public class LineBillController {
                                       @RequestParam (required = false) String restoPlace,
                                       @RequestParam (required = false) String hebergementPlace,
                                       @RequestParam (required = false) String vehicle,
+                                      @RequestParam (required = false) Integer fiscal_horsepower,
                                       @RequestParam (required = false) String guestsName) throws LineBillException, MissionException, ExpenseBillException {
 
         /*
@@ -69,6 +70,9 @@ public class LineBillController {
         if(km == null){
             km = 0;
         }
+        if(fiscal_horsepower == null){
+            fiscal_horsepower = 0;
+        }
 
         LineBill l = this.lineBillService.saveLineBill(LineBill.builder()
                 .amount(amount)
@@ -81,6 +85,7 @@ public class LineBillController {
                 .tva(tva)
                 .date(dateService.parseDate(date))
                 .country(country)
+                .fiscal_horsepower(fiscal_horsepower)
                 .km(km)
                 .restoPlace(restoPlace)
                 .hebergementPlace(hebergementPlace)

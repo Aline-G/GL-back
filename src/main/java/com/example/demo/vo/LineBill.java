@@ -23,6 +23,7 @@ public class LineBill {
     private LocalDate date;
     private String description;
     private int km;
+    private int fiscal_horsepower;
     private String restoPlace;
     private String hebergementPlace;
     private String vehicle;
