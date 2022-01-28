@@ -43,6 +43,7 @@ public class LineBillController {
                                       @RequestParam int idMission,
                                       @RequestParam int idExpenseBill,
                                       @RequestParam String country,
+                                      @RequestParam (required = false) String paymentMethod,
                                       @RequestParam (required = false) Integer km,
                                       @RequestParam (required = false) String restoPlace,
                                       @RequestParam (required = false) String hebergementPlace,
@@ -87,6 +88,7 @@ public class LineBillController {
                 .tva(tva)
                 .date(dateService.parseDate(date))
                 .country(country)
+                .paymentMethod(paymentMethod)
                 .fiscalHorsepower(fiscalHorsepower)
                 .km(km)
                 .registrationNumber(registrationNumber)

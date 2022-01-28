@@ -29,6 +29,7 @@ public class LineBill {
     private String restoPlace;
     private String hebergementPlace;
     private String vehicle;
+    private String paymentMethod;
     private String guestsName;
 
     @ManyToOne
