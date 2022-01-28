@@ -1,28 +1,23 @@
 package com.example.demo.vo;
 
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
 @Setter
 @Getter
-@SuperBuilder
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class User {
+public class Team {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
     private String name;
-    private String firstname;
-    private String mail;
-    // private Object status;
-    // @ManyToOne
-    // @JoinColumn(name = "work_team_id")
-    // private Team workTeam;
-
+    @OneToOne(orphanRemoval = true)
+    @JoinColumn(name = "leader_id")
+    private Manager leader;
 }
 
