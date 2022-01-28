@@ -4,6 +4,7 @@ package com.example.demo.vo;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Setter
 @Getter
@@ -17,6 +18,7 @@ public class Advance {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
     private float amount;
+    private LocalDate date;
     private String name;
     private String description;
     private BillStates state;
