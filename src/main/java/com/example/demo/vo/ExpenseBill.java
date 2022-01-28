@@ -26,7 +26,12 @@ public class ExpenseBill {
             joinColumns = @JoinColumn(name = "expense_id"),
             inverseJoinColumns = @JoinColumn(name = "line_id"))
     private List<LineBill> listLineBill;
-    // TODO liste d'avances
+    @OneToMany
+    @JoinTable(
+            name = "advance_in_expense_bill",
+            joinColumns = @JoinColumn(name = "expense_id"),
+            inverseJoinColumns = @JoinColumn(name = "advance_id"))
+    private List<Advance> listAdvance;
     private String date;
     private float amount;
     private BillStates state;
