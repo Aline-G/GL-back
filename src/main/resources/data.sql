@@ -11,9 +11,9 @@ INSERT INTO line_bill (id,amount,amount_without_taxes,category,conveyance,countr
 VALUES (1,500, 488,0,'','France','2022-12-06','Invitation des clients au restaurant',0,'jean dubois','',1,TRUE,null,0,'','','Paris', 12, ''),
        (2,300,250,4,'','France','2022-01-06','Achat d un robot netoyant pour vider les poubelles automatiquement',0,'','',2,FALSE ,null,0,'Carte','','', 50, '');
 
-INSERT INTO advance (id,amount,description,name,state)
-VALUES (1,1000,'Pour payer des vacances pour les clients','vacances',0),
-       (2,300,'pour payer des femmes de ménage','menage',1);
+INSERT INTO advance (id,amount,date,description,name,state)
+VALUES (1,1000,'2022-01-15','Pour payer des vacances pour les clients','vacances',0),
+       (2,300,'2022-01-03','pour payer des femmes de ménage','menage',1);
 
 INSERT INTO line_in_expense_bill(expense_id,line_id)
 VALUES (1,2),

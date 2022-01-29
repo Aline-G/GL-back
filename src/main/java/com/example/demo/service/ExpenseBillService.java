@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.sound.sampled.Line;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -170,4 +172,10 @@ public class ExpenseBillService {
     public int getMounth(String date){
         return Integer.parseInt(date.substring(5, 7));
     }
+
+    public boolean existsByDate(LocalDate date){
+        int mounthAdvance = date.getMonthValue();
+        return true;
+    }
+
 }

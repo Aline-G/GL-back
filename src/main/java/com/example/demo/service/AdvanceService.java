@@ -53,18 +53,21 @@ public class AdvanceService {
     }
 
     public Advance validation(int id) throws AdvanceException {
-        if (this.advanceRepository.existsById(id)) {
-            throw new AdvanceException("Id advance already exist", HttpStatus.CONFLICT);
+        if (!(this.advanceRepository.existsById(id))) {
+            throw new AdvanceException("Id advance does not exist", HttpStatus.CONFLICT);
         }
         if(this.advanceRepository.findById(id).getState() == BillStates.VALIDATED){
             throw new AdvanceException("this advance is already validated", HttpStatus.CONFLICT);
         }
-        return new Advance();
-        /*Advance advance = this.advanceRepository.findById(id);
+        Advance advance = this.advanceRepository.findById(id);
         advance.setState(BillStates.VALIDATED);
 
-        this.advanceRepository.ByDate(advance.getDate());
+        /*this.advanceRepository.ByDate(advance.getDate());
         this.advanceRepository.existsByDate
         */
+        this.advanceRepository.save(advance);
+        return advance;
+
+
     }
 }
