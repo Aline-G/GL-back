@@ -1,6 +1,6 @@
-INSERT INTO mission (id,date,description,name)
-VALUES (1,'2022-01-06','ramasser tous les sacs','Vider les poubelles'),
-       (2,'2022-01-06','Charmer les clients','Charme');
+INSERT INTO mission (id,name,date_begining,date_ending,state,description)
+VALUES (1,'Vider les poubelles','2022-01-06','2022-07-12',0,'ramasser tous les sacs'),
+       (2,'Charme','2022-01-06','2022-08-24',0,'Charmer les clients');
 
 INSERT INTO expense_bill(id,amount,date,description,name,state)
 VALUES (1,300,'2022-01', 'Note de frais de Janvier', 'Janvier',0),
