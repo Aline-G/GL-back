@@ -8,8 +8,8 @@ VALUES (1,300,'2022-01', 'Note de frais de Janvier', 'Janvier',0),
        (3,0,'2021-12', 'Note de frais de Décembre', 'Décembre',0);
 
 INSERT INTO line_bill (id,amount,amount_without_taxes,category,conveyance,country,date,description, fiscal_horsepower,guests_name,hebergement_place,id_expense_bill, is_validated, justificatif,km ,payment_method, registration_number,resto_place,tva,vehicle)
-VALUES (1,500, 488,0,'','France','2022-12-06','Invitation des clients au restaurant',0,'jean dubois','',0,TRUE,null,0,'','','Paris', 12, ''),
-       (2,300,250,4,'','France','2022-01-06','Achat d un robot netoyant pour vider les poubelles automatiquement',0,'','',1,FALSE ,null,0,'Carte','','', 50, '');
+VALUES (1,500, 488,0,'','France','2022-12-06','Invitation des clients au restaurant',0,'jean dubois','',1,TRUE,null,0,'','','Paris', 12, ''),
+       (2,300,250,4,'','France','2022-01-06','Achat d un robot netoyant pour vider les poubelles automatiquement',0,'','',2,FALSE ,null,0,'Carte','','', 50, '');
 
 INSERT INTO advance (id,amount,description,name,state)
 VALUES (1,1000,'Pour payer des vacances pour les clients','vacances',0),
