@@ -5,12 +5,14 @@ import com.example.demo.exception.MissionException;
 import com.example.demo.service.DateService;
 import com.example.demo.service.MissionService;
 import com.example.demo.vo.Mission;
+import com.example.demo.vo.MissionStates;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -26,12 +28,15 @@ public class MissionController {
     @GetMapping("/new")
     public Mission createNewMission(@RequestParam String name,
                                     @RequestParam String description,
-                                    @RequestParam String date) {
+                                    @RequestParam String dateBegining,
+                                    @RequestParam String dateEnding) {
 
         Mission m = this.missionService.saveMission(Mission.builder()
                 .name(name)
                 .description(description)
-                .date(dateService.parseDate(date))
+                .dateBegining(dateService.parseDate(dateBegining))
+                .dateEnding(dateService.parseDate(dateEnding))
+                .state(MissionStates.IN_PROGRESS)
                 .build());
         return m;
     }

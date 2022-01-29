@@ -19,8 +19,11 @@ public class Mission {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
     private String name;
+    private LocalDate dateBegining;
+    private LocalDate dateEnding;
+    private MissionStates state;
     private String description;
-    private LocalDate date;
+
 
     //TODO gérer liste d'utilisateurs
 
