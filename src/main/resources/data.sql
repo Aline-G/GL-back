@@ -3,8 +3,8 @@ VALUES (1,'Vider les poubelles','2022-01-06','2022-07-12',0,'ramasser tous les s
        (2,'Charme','2022-01-06','2022-08-24',0,'Charmer les clients');
 
 INSERT INTO expense_bill(id,amount,date,description,name,state)
-VALUES (1,300,'2022-01', 'Note de frais de Janvier', 'Janvier',0),
-       (2,500,'2022-02', 'Note de frais de Février', 'Février',0),
+VALUES (1,300,'2022-03', '', '',0),
+       (2,500,'2022-02', '', '',0),
        (3,0,'2021-12', 'Note de frais de Décembre', 'Décembre',0);
 
 INSERT INTO line_bill (id,amount,amount_without_taxes,category,conveyance,country,date,description, fiscal_horsepower,guests_name,hebergement_place,id_expense_bill, is_validated, justificatif,km ,payment_method, registration_number,resto_place,tva,vehicle)

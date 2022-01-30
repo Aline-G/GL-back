@@ -5,6 +5,7 @@ import com.example.demo.exception.DateException;
 import com.example.demo.exception.ExpenseBillException;
 import com.example.demo.exception.LineBillException;
 import com.example.demo.repository.ExpenseBillRepository;
+import com.example.demo.vo.Advance;
 import com.example.demo.vo.BillStates;
 import com.example.demo.vo.ExpenseBill;
 import com.example.demo.vo.LineBill;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.sound.sampled.Line;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -169,13 +171,62 @@ public class ExpenseBillService {
         }
     }
 
-    public int getMounth(String date){
-        return Integer.parseInt(date.substring(5, 7));
-    }
+    public String getMounth(String date){return date.substring(5, 7);}
 
-    public boolean existsByDate(LocalDate date){
-        int mounthAdvance = date.getMonthValue();
-        return true;
+    public String getYear(String date){return date.substring(0,4);}
+
+    /*public boolean existsByDate(LocalDate date){
+        int mounthDate = date.getMonthValue();
+        Iterable<ExpenseBill> list = this.expenseBillRepository.findAll();
+        for (ExpenseBill expenseBill : list){
+            if( getMounth(expenseBill.getDate()) == mounthDate){
+                return true;
+            }
+        }
+        return false;
+    }*/
+
+    public HttpStatus addAdvanceToCurrentBill(Advance advance) throws ExpenseBillException, DateException {
+
+        List<ExpenseBill> list = getExpenseBillList();
+        String currentDate = LocalDate.now().toString();
+        String currentYear = getYear(currentDate);
+        String currentMounth = getMounth(currentDate);
+
+        String expenseBillDate = currentYear+"-"+currentMounth;
+
+        boolean billExists = false;
+
+        for(ExpenseBill expenseBill : list) {
+            if (expenseBill.getDate().equals(expenseBillDate)) {
+                List<Advance> listAdvance = expenseBill.getListAdvance();
+                listAdvance.add(advance);
+                expenseBill.setListAdvance(listAdvance);
+                this.expenseBillRepository.save(expenseBill);
+                billExists = true;
+                break;
+            }
+        }
+
+        if(!billExists){
+            List<Advance> listAdvance = new ArrayList<Advance>();
+            listAdvance.add(advance);
+
+            this.expenseBillRepository.save(ExpenseBill.builder()
+                    .amount(0)
+                    .listLineBill(new ArrayList<>())
+                    .listAdvance(listAdvance)
+                    .name("")
+                    .date(expenseBillDate)
+                    .description("")
+                    .state(BillStates.DRAFT)
+                    .build());
+        }
+
+
+        return HttpStatus.OK;
+
+
     }
 
 }
