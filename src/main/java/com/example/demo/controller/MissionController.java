@@ -52,6 +52,11 @@ public class MissionController {
         return this.missionService.getMissionList();
     }
 
+    @GetMapping("/changestate")
+    public HttpStatus changeState(int idMission, String state) throws MissionException {
+        return this.missionService.changeState(idMission, state);
+    }
+
 
     //TRAITEMENT DES EXCEPTIONS
     @ExceptionHandler(FunctionalException.class)
