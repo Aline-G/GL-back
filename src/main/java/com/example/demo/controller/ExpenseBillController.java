@@ -1,12 +1,11 @@
 package com.example.demo.controller;
 
 
-import com.example.demo.exception.DateException;
-import com.example.demo.exception.ExpenseBillException;
-import com.example.demo.exception.FunctionalException;
-import com.example.demo.exception.LineBillException;
+import com.example.demo.exception.*;
 import com.example.demo.service.DateService;
 import com.example.demo.service.ExpenseBillService;
+import com.example.demo.service.MissionService;
+import com.example.demo.vo.Advance;
 import com.example.demo.vo.BillStates;
 import com.example.demo.vo.ExpenseBill;
 import lombok.Getter;
@@ -15,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +27,7 @@ public class ExpenseBillController {
     ExpenseBillService expenseBillService;
     @Autowired
     DateService dateService;
+
 
 
     @GetMapping("/new")
@@ -94,6 +95,7 @@ public class ExpenseBillController {
     public ExpenseBill sendForValidation(int expenseBillId) throws LineBillException, ExpenseBillException {
         return this.expenseBillService.sendForValidation(expenseBillId);
     }
+
 
     // TODO quand utilisateur sera codé faire des fonction de get en fonction de UserID passe en parametre
 

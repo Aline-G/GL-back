@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.exception.AdvanceException;
+import com.example.demo.exception.DateException;
 import com.example.demo.exception.ExpenseBillException;
 import com.example.demo.exception.LineBillException;
 import com.example.demo.repository.AdvanceRepository;
@@ -19,6 +20,8 @@ import java.util.stream.StreamSupport;
 public class AdvanceService {
     @Autowired
     AdvanceRepository advanceRepository;
+    @Autowired
+    ExpenseBillService expenseBillService;
 
     public Advance saveAdvance(Advance advance) throws AdvanceException {
         if (this.advanceRepository.existsById(advance.getId())) {
@@ -52,19 +55,19 @@ public class AdvanceService {
         return HttpStatus.OK;
     }
 
-    public Advance validation(int id) throws AdvanceException {
-        if (this.advanceRepository.existsById(id)) {
-            throw new AdvanceException("Id advance already exist", HttpStatus.CONFLICT);
+    public Advance validation(int id) throws AdvanceException, ExpenseBillException, DateException {
+        if (!(this.advanceRepository.existsById(id))) {
+            throw new AdvanceException("Id advance does not exist", HttpStatus.CONFLICT);
         }
         if(this.advanceRepository.findById(id).getState() == BillStates.VALIDATED){
             throw new AdvanceException("this advance is already validated", HttpStatus.CONFLICT);
         }
-        return new Advance();
-        /*Advance advance = this.advanceRepository.findById(id);
+        Advance advance = this.advanceRepository.findById(id);
         advance.setState(BillStates.VALIDATED);
+        this.advanceRepository.save(advance);
+        this.expenseBillService.addAdvanceToCurrentBill(advance);
+        return advance;
 
-        this.advanceRepository.ByDate(advance.getDate());
-        this.advanceRepository.existsByDate
-        */
+
     }
 }

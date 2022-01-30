@@ -1,9 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.exception.AdvanceException;
-import com.example.demo.exception.FunctionalException;
-import com.example.demo.exception.LineBillException;
-import com.example.demo.exception.MissionException;
+import com.example.demo.exception.*;
 import com.example.demo.service.AdvanceService;
 import com.example.demo.service.DateService;
 import com.example.demo.service.MissionService;
@@ -75,7 +72,7 @@ public class AdvanceController {
     }
 
     @GetMapping("/validation")
-    public Advance validation(@RequestParam int id) throws AdvanceException {
+    public Advance validation(@RequestParam int id) throws AdvanceException, ExpenseBillException, DateException {
         return this.advanceService.validation(id);
     }
 
