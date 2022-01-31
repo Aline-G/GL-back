@@ -29,7 +29,7 @@ VALUES (1, 'Vider les poubelles', '2022-01-06', '2022-07-12', 0, 'ramasser tous 
        (2, 'Charme', '2022-01-06', '2022-08-24', 0, 'Charmer les clients');
 
 INSERT INTO expense_bill(id, amount, date, description, name, state)
-VALUES (1, 300, '2022-03', '', '', 0),
+VALUES (1, 300, '2022-01', '', '', 0),
        (2, 500, '2022-02', '', '', 0),
        (3, 0, '2021-12', 'Note de frais de Décembre', 'Décembre', 0);
 
@@ -44,7 +44,8 @@ VALUES (1, 500, 488, 0, '', 'France', '2022-12-06', 'Invitation des clients au r
 
 INSERT INTO advance (id, amount, date, description, name, state)
 VALUES (1, 1000, '2022-01-15', 'Pour payer des vacances pour les clients', 'vacances', 0),
-       (2, 300, '2022-01-03', 'pour payer des femmes de ménage', 'menage', 1);
+       (2, 300, '2022-01-03', 'pour payer des femmes de ménage', 'menage', 1),
+       (3, 300, '2022-01-03', 'pour payer des services', 'menage', 2);
 
 INSERT INTO user(dtype, id, firstname, mail, name)
 VALUES ('User', 1, 'nono', 'nono.bobo@pouet.xxx', 'bobo'),
@@ -62,4 +63,8 @@ VALUES (1, 2),
 
 INSERT INTO advance_for_mission(mission_id, advance_id)
 VALUES (1, 2),
-       (2, 1);
+       (2, 1),
+       (1, 3);
+
+INSERT INTO advance_in_expense_bill(expense_id, advance_id)
+VALUES (1, 3);
