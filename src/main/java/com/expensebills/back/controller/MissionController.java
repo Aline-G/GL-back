@@ -6,13 +6,13 @@ import com.expensebills.back.exception.MissionException;
 import com.expensebills.back.service.DateService;
 import com.expensebills.back.service.MissionService;
 import com.expensebills.back.vo.Mission;
-import com.expensebills.back.vo.MissionStates;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -31,12 +31,17 @@ public class MissionController {
                                     @RequestParam String dateBegining,
                                     @RequestParam String dateEnding) throws DateException {
 
+        LocalDate dateB = dateService.parseDate(dateBegining) ;
+        LocalDate dateE = dateService.parseDate(dateEnding);
+
+        this.missionService.checkDate(dateB, dateE);
+
         Mission m = this.missionService.saveMission(Mission.builder()
                 .name(name)
                 .description(description)
-                .dateBegining(dateService.parseDate(dateBegining))
-                .dateEnding(dateService.parseDate(dateEnding))
-                .state(this.missionService.checkDate(dateService.parseDate(dateBegining),dateService.parseDate(dateEnding)))
+                .dateBegining(dateB)
+                .dateEnding(dateE)
+                .state(this.missionService.getState(dateB, dateE))
                 .build());
         return m;
     }

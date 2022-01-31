@@ -19,10 +19,7 @@ import java.util.stream.StreamSupport;
 public class MissionService {
     @Autowired MissionRepository missionRepository;
 
-    public Mission saveMission(Mission mission) throws DateException {
-        if(mission.getDateBegining().isAfter(mission.getDateEnding())){
-            throw new DateException("Beginning date is after ending date", HttpStatus.BAD_REQUEST);
-        }
+    public Mission saveMission(Mission mission){
 
         return this.missionRepository.save(mission);
     }
@@ -71,18 +68,27 @@ public class MissionService {
 
     }
 
-    public MissionStates checkDate(LocalDate dateBegining, LocalDate dateEnding) {
+    public MissionStates getState(LocalDate dateBegining, LocalDate dateEnding) {
 
-        if(dateBegining.isBefore(LocalDate.now())&& dateEnding.isAfter(LocalDate.now())){
+        if((dateBegining.isBefore(LocalDate.now()) ||dateBegining.isEqual(LocalDate.now()) )&& (dateEnding.isAfter(LocalDate.now()) || dateEnding.isEqual(LocalDate.now()))){
             return MissionStates.IN_PROGRESS;
         }
         else if(dateBegining.isAfter(LocalDate.now())){
             return MissionStates.INCOMING;
         }
-        else if(dateEnding.isBefore(LocalDate.now())){
-            return MissionStates.FINISHED;
-        }
 
         return null;
+    }
+
+
+    public void checkDate(LocalDate dateBegining, LocalDate dateEnding) throws DateException {
+        System.out.println(dateBegining.isAfter(dateEnding));
+        System.out.println(dateEnding.isAfter(LocalDate.now()));
+        if(dateBegining.isAfter(dateEnding)){
+            throw new DateException("Beginning date is after ending date", HttpStatus.BAD_REQUEST);
+        }
+        else if(dateEnding.isBefore(LocalDate.now())){
+            throw new DateException("Date of mission is before today ", HttpStatus.BAD_REQUEST);
+        }
     }
 }
