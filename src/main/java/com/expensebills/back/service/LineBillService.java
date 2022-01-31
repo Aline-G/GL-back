@@ -3,6 +3,7 @@ package com.expensebills.back.service;
 import com.expensebills.back.exception.ExpenseBillException;
 import com.expensebills.back.exception.LineBillException;
 import com.expensebills.back.repository.LineBillRepository;
+import com.expensebills.back.vo.BillStates;
 import com.expensebills.back.vo.LineBill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,10 @@ public class LineBillService {
     @Autowired
     ExpenseBillService expenseBillService;
 
-    public LineBill saveLineBill(LineBill lineBill) throws LineBillException {
+    public LineBill saveLineBill(LineBill lineBill) throws LineBillException, ExpenseBillException {
+
+        // On check l'etat de l'expense bill
+        checkStateExpenseBill(lineBill.getIdExpenseBill());
 
         // check the existence of TVA data
         /*if(lineBill.getTva() == null && lineBill.getTvaPercent() == null){
@@ -41,6 +45,15 @@ public class LineBillService {
 
         return this.lineBillRepository.save(lineBill);
 
+    }
+
+    private void checkStateExpenseBill(int idExpenseBill) throws ExpenseBillException {
+        if(this.expenseBillService.getState(idExpenseBill) == BillStates.VALIDATED){
+            throw new ExpenseBillException("This expenseBill is already validated", HttpStatus.CONFLICT);
+        }
+        else if(this.expenseBillService.getState(idExpenseBill) == BillStates.WAITING){
+            throw new ExpenseBillException("This expenseBill is waiting for validation and can't be modified", HttpStatus.CONFLICT);
+        }
     }
 
     public void checkTVA(LineBill lineBill) throws LineBillException {
@@ -114,7 +127,7 @@ public class LineBillService {
     }
 
     public double calculAmount(Float nbKm, int nbFiscalHorsepower) throws LineBillException {
-        double amount = 0;
+        double amount;
         if(nbFiscalHorsepower<= 3){
             if(nbKm<= 5000){
                 amount = nbKm*0.456;

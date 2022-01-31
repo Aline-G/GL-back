@@ -1,8 +1,6 @@
 package com.expensebills.back.service;
 
-import com.expensebills.back.exception.DateException;
 import com.expensebills.back.exception.ExpenseBillException;
-import com.expensebills.back.exception.LineBillException;
 import com.expensebills.back.repository.ExpenseBillRepository;
 import com.expensebills.back.vo.Advance;
 import com.expensebills.back.vo.BillStates;
@@ -25,7 +23,7 @@ public class ExpenseBillService {
     @Autowired
     DateService dateService;
 
-    public ExpenseBill saveExpenseBill(ExpenseBill expenseBill) throws ExpenseBillException, DateException {
+    public ExpenseBill saveExpenseBill(ExpenseBill expenseBill) throws ExpenseBillException {
 
         //dateService.isCoherent(expenseBill.getDate());
 
@@ -90,7 +88,7 @@ public class ExpenseBillService {
     }
 
 
-    public HttpStatus validExpenseBill(int expenseBillId) throws LineBillException, ExpenseBillException {
+    public HttpStatus validExpenseBill(int expenseBillId) throws ExpenseBillException {
         if (!this.expenseBillRepository.existsById(expenseBillId)) {
             throw new ExpenseBillException("Impossible to update an inexisting expenseBill", HttpStatus.CONFLICT);
         }
@@ -128,7 +126,7 @@ public class ExpenseBillService {
 
     //TODO penser a faire une fonction qui gere le moment ou le colaborateur demande a valider sa note
 
-    public ExpenseBill sendForValidation(int expenseBillId) throws LineBillException, ExpenseBillException {
+    public ExpenseBill sendForValidation(int expenseBillId) throws ExpenseBillException {
         if (!this.expenseBillRepository.existsById(expenseBillId)) {
             throw new ExpenseBillException("Impossible to update an inexisting expenseBill", HttpStatus.CONFLICT);
         }
@@ -181,7 +179,7 @@ public class ExpenseBillService {
         return false;
     }*/
 
-    public HttpStatus addAdvanceToCurrentBill(Advance advance) throws ExpenseBillException, DateException {
+    public HttpStatus addAdvanceToCurrentBill(Advance advance) {
 
         List<ExpenseBill> list = getExpenseBillList();
         String currentDate = LocalDate.now().toString();
@@ -204,7 +202,7 @@ public class ExpenseBillService {
         }
 
         if(!billExists){
-            List<Advance> listAdvance = new ArrayList<Advance>();
+            List<Advance> listAdvance = new ArrayList<>();
             listAdvance.add(advance);
 
             this.expenseBillRepository.save(ExpenseBill.builder()
@@ -224,4 +222,7 @@ public class ExpenseBillService {
 
     }
 
+    public BillStates getState(int idExpenseBill) {
+        return this.expenseBillRepository.findById(idExpenseBill).getState();
+    }
 }
