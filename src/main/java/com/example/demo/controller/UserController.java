@@ -58,4 +58,9 @@ public class UserController {
     public List<User> getUserList() {
         return this.userService.getUserList();
     }
+
+    @GetMapping("/listmanagers")
+    public List<Manager> getManagerList() {
+        return this.userService.getManagerList();
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.repository.UserRepository;
+import com.example.demo.vo.Manager;
 import com.example.demo.vo.Team;
 import com.example.demo.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,12 @@ public class UserService {
 
     public List<User> getUserList() {
         return StreamSupport.stream(this.userRepository.findAll().spliterator(), false).collect(Collectors.toList());
+    }
+
+    public List<Manager> getManagerList() {
+        return StreamSupport.stream(this.userRepository.findAll().spliterator(), false).collect(
+                Collectors.filtering(user -> user instanceof Manager,
+                                     Collectors.mapping(user -> (Manager) user, Collectors.toList())));
     }
 
     public User saveUser(User user) {
