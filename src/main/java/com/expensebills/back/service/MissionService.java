@@ -1,6 +1,7 @@
 package com.expensebills.back.service;
 
 
+import com.expensebills.back.exception.DateException;
 import com.expensebills.back.exception.MissionException;
 import com.expensebills.back.repository.MissionRepository;
 import com.expensebills.back.vo.Mission;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -17,7 +19,11 @@ import java.util.stream.StreamSupport;
 public class MissionService {
     @Autowired MissionRepository missionRepository;
 
-    public Mission saveMission(Mission mission){
+    public Mission saveMission(Mission mission) throws DateException {
+        if(mission.getDateBegining().isAfter(mission.getDateEnding())){
+            throw new DateException("Beginning date is after ending date", HttpStatus.BAD_REQUEST);
+        }
+
         return this.missionRepository.save(mission);
     }
 
@@ -52,23 +58,31 @@ public class MissionService {
         }
 
         Mission mission = this.findById(idMission);
-        if(state.equals("IN_PROGRESS")){
-            mission.setState(MissionStates.IN_PROGRESS);
-        }
-        else if(state.equals("FINISHED")){
-            mission.setState(MissionStates.FINISHED);
-        }
-        else if(state.equals("SUSPENDED")){
-            mission.setState(MissionStates.SUSPENDED);
-        }
-        else{
-            throw new MissionException("the new state does not exists", HttpStatus.BAD_REQUEST);
+        switch (state) {
+            case "IN_PROGRESS" -> mission.setState(MissionStates.IN_PROGRESS);
+            case "FINISHED" -> mission.setState(MissionStates.FINISHED);
+            case "SUSPENDED" -> mission.setState(MissionStates.SUSPENDED);
+            case "INCOMING" -> mission.setState(MissionStates.INCOMING);
+            default -> throw new MissionException("the new state does not exists", HttpStatus.BAD_REQUEST);
         }
 
         this.missionRepository.save(mission);
         return HttpStatus.OK;
 
+    }
 
+    public MissionStates checkDate(LocalDate dateBegining, LocalDate dateEnding) {
 
+        if(dateBegining.isBefore(LocalDate.now())&& dateEnding.isAfter(LocalDate.now())){
+            return MissionStates.IN_PROGRESS;
+        }
+        else if(dateBegining.isAfter(LocalDate.now())){
+            return MissionStates.INCOMING;
+        }
+        else if(dateEnding.isBefore(LocalDate.now())){
+            return MissionStates.FINISHED;
+        }
+
+        return null;
     }
 }

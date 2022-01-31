@@ -1,5 +1,6 @@
 package com.expensebills.back.controller;
 
+import com.expensebills.back.exception.DateException;
 import com.expensebills.back.exception.FunctionalException;
 import com.expensebills.back.exception.MissionException;
 import com.expensebills.back.service.DateService;
@@ -28,17 +29,19 @@ public class MissionController {
     public Mission createNewMission(@RequestParam String name,
                                     @RequestParam String description,
                                     @RequestParam String dateBegining,
-                                    @RequestParam String dateEnding) {
+                                    @RequestParam String dateEnding) throws DateException {
 
         Mission m = this.missionService.saveMission(Mission.builder()
                 .name(name)
                 .description(description)
                 .dateBegining(dateService.parseDate(dateBegining))
                 .dateEnding(dateService.parseDate(dateEnding))
-                .state(MissionStates.IN_PROGRESS)
+                .state(this.missionService.checkDate(dateService.parseDate(dateBegining),dateService.parseDate(dateEnding)))
                 .build());
         return m;
     }
+
+
 
     @GetMapping("/delete")
     public HttpStatus deleteMission(int id) throws MissionException {
