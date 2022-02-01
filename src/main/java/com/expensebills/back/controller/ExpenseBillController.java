@@ -1,10 +1,7 @@
 package com.expensebills.back.controller;
 
-
-import com.expensebills.back.exception.DateException;
 import com.expensebills.back.exception.ExpenseBillException;
 import com.expensebills.back.exception.FunctionalException;
-import com.expensebills.back.exception.LineBillException;
 import com.expensebills.back.service.DateService;
 import com.expensebills.back.service.ExpenseBillService;
 import com.expensebills.back.vo.BillStates;
@@ -33,7 +30,7 @@ public class ExpenseBillController {
     @GetMapping("/new")
     public ExpenseBill createNewExpenseBill(@RequestParam String name,
                                          @RequestParam String description,
-                                         @RequestParam String date) throws ExpenseBillException, DateException {
+                                         @RequestParam String date) throws ExpenseBillException {
         /*
          * Function that creates a new expenseBill in the data base.
          * When an bill is created its state is DRAFT
@@ -45,8 +42,7 @@ public class ExpenseBillController {
 
         expenseBillService.verifDate(date);
 
-
-        ExpenseBill e = this.expenseBillService.saveExpenseBill(ExpenseBill.builder()
+        return this.expenseBillService.saveExpenseBill(ExpenseBill.builder()
                 .amount(0)
                 .listLineBill(new ArrayList<>())
                 .listAdvance(new ArrayList<>())
@@ -55,8 +51,6 @@ public class ExpenseBillController {
                 .description(description)
                 .state(BillStates.DRAFT)
                 .build());
-
-        return e;
     }
 
     @GetMapping("/delete")
@@ -74,10 +68,14 @@ public class ExpenseBillController {
         return this.expenseBillService.getExpenseBillById(id);
     }
 
-    //TODO verifier que c'est bien un manager qui fait la demande
-    @GetMapping("/validation")
-    public HttpStatus validExpenseBill(@RequestParam int expenseBillId) throws LineBillException, ExpenseBillException {
-        return this.expenseBillService.validExpenseBill(expenseBillId);
+    @GetMapping("/numberNotesNonValidated")
+    public int getNumberBillsNonValidated() {
+        return this.expenseBillService.getNumberBillsNonValidated();
+    }
+
+    @GetMapping("/sendValidation")
+    public ExpenseBill sendForValidation(int expenseBillId) throws ExpenseBillException {
+        return this.expenseBillService.sendForValidation(expenseBillId);
     }
 
     @GetMapping("/total")
@@ -85,16 +83,12 @@ public class ExpenseBillController {
         return this.expenseBillService.getTotal();
     }
 
-    @GetMapping("/numberNotesNonValidated")
-    public int getNumberBillsNonValidated() {
-        return this.expenseBillService.getNumberBillsNonValidated();
+    //TODO verifier que c'est bien un manager qui fait la demande
+    @GetMapping("/validation")
+    public HttpStatus validExpenseBill(@RequestParam int expenseBillId) throws ExpenseBillException {
+        return this.expenseBillService.validExpenseBill(expenseBillId);
     }
 
-
-    @GetMapping("/sendValidation")
-    public ExpenseBill sendForValidation(int expenseBillId) throws LineBillException, ExpenseBillException {
-        return this.expenseBillService.sendForValidation(expenseBillId);
-    }
 
 
     // TODO quand utilisateur sera codé faire des fonction de get en fonction de UserID passe en parametre

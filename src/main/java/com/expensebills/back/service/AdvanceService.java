@@ -1,8 +1,6 @@
 package com.expensebills.back.service;
 
 import com.expensebills.back.exception.AdvanceException;
-import com.expensebills.back.exception.DateException;
-import com.expensebills.back.exception.ExpenseBillException;
 import com.expensebills.back.repository.AdvanceRepository;
 import com.expensebills.back.vo.Advance;
 import com.expensebills.back.vo.BillStates;
@@ -20,19 +18,6 @@ public class AdvanceService {
     AdvanceRepository advanceRepository;
     @Autowired
     ExpenseBillService expenseBillService;
-
-    public Advance saveAdvance(Advance advance) throws AdvanceException {
-        if (this.advanceRepository.existsById(advance.getId())) {
-            throw new AdvanceException("Id advance already exist", HttpStatus.CONFLICT);
-        }
-
-        return this.advanceRepository.save(advance);
-    }
-
-
-    public List<Advance> getAdvanceList() {
-        return StreamSupport.stream(this.advanceRepository.findAll().spliterator(), false).collect(Collectors.toList());
-    }
 
     public Advance askForValidation(int id) throws AdvanceException {
         if (!this.advanceRepository.existsById(id)) {
@@ -53,7 +38,19 @@ public class AdvanceService {
         return HttpStatus.OK;
     }
 
-    public Advance validation(int id) throws AdvanceException, ExpenseBillException, DateException {
+    public List<Advance> getAdvanceList() {
+        return StreamSupport.stream(this.advanceRepository.findAll().spliterator(), false).collect(Collectors.toList());
+    }
+
+    public Advance saveAdvance(Advance advance) throws AdvanceException {
+        if (this.advanceRepository.existsById(advance.getId())) {
+            throw new AdvanceException("Id advance already exist", HttpStatus.CONFLICT);
+        }
+
+        return this.advanceRepository.save(advance);
+    }
+
+    public Advance validation(int id) throws AdvanceException {
         if (!(this.advanceRepository.existsById(id))) {
             throw new AdvanceException("Id advance does not exist", HttpStatus.CONFLICT);
         }

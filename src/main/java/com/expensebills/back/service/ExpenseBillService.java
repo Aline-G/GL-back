@@ -18,28 +18,43 @@ import java.util.stream.StreamSupport;
 
 @Service
 public class ExpenseBillService {
-    @Autowired ExpenseBillRepository expenseBillRepository;
 
     @Autowired
-    DateService dateService;
+    ExpenseBillRepository expenseBillRepository;
 
-    public ExpenseBill saveExpenseBill(ExpenseBill expenseBill) throws ExpenseBillException {
+    public HttpStatus addAdvanceToCurrentBill(Advance advance) {
+        List<ExpenseBill> list = getExpenseBillList();
+        String currentDate = LocalDate.now().toString();
+        String currentYear = getYear(currentDate);
+        String currentMounth = getMonth(currentDate);
 
-        //dateService.isCoherent(expenseBill.getDate());
+        String expenseBillDate = currentYear+"-"+currentMounth;
+        boolean billExists = false;
 
-        if (this.expenseBillRepository.existsById(expenseBill.getId())) {
-            throw new ExpenseBillException("Id of the bill already exists", HttpStatus.CONFLICT);
+        for(ExpenseBill expenseBill : list) {
+            if (expenseBill.getDate().equals(expenseBillDate)) {
+                List<Advance> listAdvance = expenseBill.getListAdvance();
+                listAdvance.add(advance);
+                expenseBill.setListAdvance(listAdvance);
+                this.expenseBillRepository.save(expenseBill);
+                billExists = true;
+                break;
+            }
         }
+        if(!billExists){
+            List<Advance> listAdvance = new ArrayList<>();
+            listAdvance.add(advance);
 
-        return this.expenseBillRepository.save(expenseBill);
-    }
-
-    public HttpStatus deleteExpenseBill(int id) throws ExpenseBillException {
-        //Check existence of this id
-        if(!expenseBillRepository.existsById(id)){
-            throw new ExpenseBillException("Id doesn't exist", HttpStatus.BAD_REQUEST);
+            this.expenseBillRepository.save(ExpenseBill.builder()
+                    .amount(0)
+                    .listLineBill(new ArrayList<>())
+                    .listAdvance(listAdvance)
+                    .name("")
+                    .date(expenseBillDate)
+                    .description("")
+                    .state(BillStates.DRAFT)
+                    .build());
         }
-        this.expenseBillRepository.delete(this.expenseBillRepository.findById(id));
         return HttpStatus.OK;
     }
 
@@ -47,24 +62,12 @@ public class ExpenseBillService {
         if(!expenseBillRepository.existsById(idExpenseBill)){
             throw new ExpenseBillException("Id doesn't exist", HttpStatus.BAD_REQUEST);
         }
-
         ExpenseBill expenseBill = expenseBillRepository.findById(idExpenseBill);
         List<LineBill> list = expenseBill.getListLineBill();
         list.add(lineBill);
         expenseBill.setListLineBill(list);
         expenseBill.setAmount(expenseBill.getAmount()+lineBill.getAmount());
         expenseBillRepository.save(expenseBill);
-    }
-
-    public List<ExpenseBill> getExpenseBillList() {
-        return StreamSupport.stream(this.expenseBillRepository.findAll().spliterator(), false).collect(Collectors.toList());
-    }
-
-
-    public void existsById(int idExpenseBill) throws ExpenseBillException {
-        if(!this.expenseBillRepository.existsById(idExpenseBill)){
-            throw new ExpenseBillException("This Expense Bill does not exists",HttpStatus.BAD_REQUEST);
-        }
     }
 
     // TODO check aussi que les avances sont valide
@@ -81,27 +84,6 @@ public class ExpenseBillService {
         return res;
     }
 
-    public void setStateValidated(int expenseBillId){
-        ExpenseBill expenseBill = expenseBillRepository.findById(expenseBillId);
-        expenseBill.setState(BillStates.VALIDATED);
-        expenseBillRepository.save(expenseBill);
-    }
-
-
-    public HttpStatus validExpenseBill(int expenseBillId) throws ExpenseBillException {
-        if (!this.expenseBillRepository.existsById(expenseBillId)) {
-            throw new ExpenseBillException("Impossible to update an inexisting expenseBill", HttpStatus.CONFLICT);
-        }
-        ExpenseBill expenseBill = expenseBillRepository.findById(expenseBillId);
-        List<LineBill> listLine = expenseBill.getListLineBill();
-
-        for(LineBill lineBill : listLine){
-            lineBill.setValidated(true);
-        }
-        setStateValidated(expenseBillId);
-        return(HttpStatus.OK);
-    }
-
     public void checkState(int idExpenseBill) throws ExpenseBillException {
         ExpenseBill expense = this.expenseBillRepository.findById(idExpenseBill);
         if(expense.getState()==BillStates.VALIDATED){
@@ -112,29 +94,33 @@ public class ExpenseBillService {
 
     }
 
-    public float getTotal() {
-
-        float total = 0;
-        List<ExpenseBill> list = getExpenseBillList();
-        for (ExpenseBill e : list){
-            if(e.getState() == BillStates.DRAFT || e.getState() == BillStates.WAITING){
-                total+=e.getAmount();
-            }
+    public HttpStatus deleteExpenseBill(int id) throws ExpenseBillException {
+        //Check existence of this id
+        if(!expenseBillRepository.existsById(id)){
+            throw new ExpenseBillException("Id doesn't exist", HttpStatus.BAD_REQUEST);
         }
-        return total;
+        this.expenseBillRepository.delete(this.expenseBillRepository.findById(id));
+        return HttpStatus.OK;
     }
 
-    //TODO penser a faire une fonction qui gere le moment ou le colaborateur demande a valider sa note
-
-    public ExpenseBill sendForValidation(int expenseBillId) throws ExpenseBillException {
-        if (!this.expenseBillRepository.existsById(expenseBillId)) {
-            throw new ExpenseBillException("Impossible to update an inexisting expenseBill", HttpStatus.CONFLICT);
+    public void existsById(int idExpenseBill) throws ExpenseBillException {
+        if(!this.expenseBillRepository.existsById(idExpenseBill)){
+            throw new ExpenseBillException("This Expense Bill does not exists",HttpStatus.BAD_REQUEST);
         }
-        ExpenseBill expenseBill = expenseBillRepository.findById(expenseBillId);
-        expenseBill.setState(BillStates.WAITING);
-        expenseBillRepository.save(expenseBill);
-        return expenseBill;
     }
+
+    public ExpenseBill getExpenseBillById(int id) throws ExpenseBillException {
+        if (!this.expenseBillRepository.existsById(id)) {
+            throw new ExpenseBillException("this expenseBill does not exists", HttpStatus.CONFLICT);
+        }
+        return this.expenseBillRepository.findById(id);
+    }
+
+    public List<ExpenseBill> getExpenseBillList() {
+        return StreamSupport.stream(this.expenseBillRepository.findAll().spliterator(), false).collect(Collectors.toList());
+    }
+
+    public String getMonth(String date){return date.substring(5, 7);}
 
     public int getNumberBillsNonValidated() {
         int res = 0;
@@ -147,24 +133,20 @@ public class ExpenseBillService {
         return res;
     }
 
-    public ExpenseBill getExpenseBillById(int id) throws ExpenseBillException {
-        if (!this.expenseBillRepository.existsById(id)) {
-            throw new ExpenseBillException("this expenseBill does not exists", HttpStatus.CONFLICT);
-        }
-        return this.expenseBillRepository.findById(id);
+    public BillStates getState(int idExpenseBill) {
+        return this.expenseBillRepository.findById(idExpenseBill).getState();
     }
 
-
-    public void verifDate(String date) throws ExpenseBillException {
+    public float getTotal() {
+        float total = 0;
         List<ExpenseBill> list = getExpenseBillList();
-        for(ExpenseBill e : list){
-            if(e.getDate().equals(date)){
-                throw new ExpenseBillException("A bill already has this date",HttpStatus.CONFLICT);
+        for (ExpenseBill e : list){
+            if(e.getState() == BillStates.DRAFT || e.getState() == BillStates.WAITING){
+                total+=e.getAmount();
             }
         }
+        return total;
     }
-
-    public String getMounth(String date){return date.substring(5, 7);}
 
     public String getYear(String date){return date.substring(0,4);}
 
@@ -179,50 +161,61 @@ public class ExpenseBillService {
         return false;
     }*/
 
-    public HttpStatus addAdvanceToCurrentBill(Advance advance) {
+    public ExpenseBill saveExpenseBill(ExpenseBill expenseBill) throws ExpenseBillException {
 
-        List<ExpenseBill> list = getExpenseBillList();
-        String currentDate = LocalDate.now().toString();
-        String currentYear = getYear(currentDate);
-        String currentMounth = getMounth(currentDate);
-
-        String expenseBillDate = currentYear+"-"+currentMounth;
-
-        boolean billExists = false;
-
-        for(ExpenseBill expenseBill : list) {
-            if (expenseBill.getDate().equals(expenseBillDate)) {
-                List<Advance> listAdvance = expenseBill.getListAdvance();
-                listAdvance.add(advance);
-                expenseBill.setListAdvance(listAdvance);
-                this.expenseBillRepository.save(expenseBill);
-                billExists = true;
-                break;
-            }
+        if (this.expenseBillRepository.existsById(expenseBill.getId())) {
+            throw new ExpenseBillException("Id of the bill already exists", HttpStatus.CONFLICT);
         }
 
-        if(!billExists){
-            List<Advance> listAdvance = new ArrayList<>();
-            listAdvance.add(advance);
-
-            this.expenseBillRepository.save(ExpenseBill.builder()
-                    .amount(0)
-                    .listLineBill(new ArrayList<>())
-                    .listAdvance(listAdvance)
-                    .name("")
-                    .date(expenseBillDate)
-                    .description("")
-                    .state(BillStates.DRAFT)
-                    .build());
-        }
-
-
-        return HttpStatus.OK;
-
-
+        return this.expenseBillRepository.save(expenseBill);
     }
 
-    public BillStates getState(int idExpenseBill) {
-        return this.expenseBillRepository.findById(idExpenseBill).getState();
+    //TODO penser a faire une fonction qui gere le moment ou le colaborateur demande a valider sa note
+
+    public ExpenseBill sendForValidation(int expenseBillId) throws ExpenseBillException {
+        if (!this.expenseBillRepository.existsById(expenseBillId)) {
+            throw new ExpenseBillException("Impossible to update an inexisting expenseBill", HttpStatus.CONFLICT);
+        }
+        ExpenseBill expenseBill = expenseBillRepository.findById(expenseBillId);
+        if(expenseBill.getListLineBill()==null && expenseBill.getListAdvance() == null){
+            throw new ExpenseBillException("Can't ask validation for an empty expenseBill", HttpStatus.BAD_REQUEST);
+        }
+        expenseBill.setState(BillStates.WAITING);
+        expenseBillRepository.save(expenseBill);
+        return expenseBill;
+    }
+
+    public void setStateValidated(int expenseBillId){
+        ExpenseBill expenseBill = expenseBillRepository.findById(expenseBillId);
+        expenseBill.setState(BillStates.VALIDATED);
+        expenseBillRepository.save(expenseBill);
+    }
+
+    public HttpStatus validExpenseBill(int expenseBillId) throws ExpenseBillException {
+        if (!this.expenseBillRepository.existsById(expenseBillId)) {
+            throw new ExpenseBillException("Impossible to update an inexisting expenseBill", HttpStatus.CONFLICT);
+        }
+        ExpenseBill expenseBill = expenseBillRepository.findById(expenseBillId);
+        List<LineBill> listLine = expenseBill.getListLineBill();
+        List<Advance> listAdvance = expenseBill.getListAdvance();
+
+        for(LineBill lineBill : listLine){
+            lineBill.setValidated(true);
+        }
+        for(Advance advance : listAdvance){
+            advance.setState(BillStates.VALIDATED);
+        }
+        setStateValidated(expenseBillId);
+        return(HttpStatus.OK);
+    }
+
+
+    public void verifDate(String date) throws ExpenseBillException {
+        List<ExpenseBill> list = getExpenseBillList();
+        for(ExpenseBill e : list){
+            if(e.getDate().equals(date)){
+                throw new ExpenseBillException("A bill already has this date",HttpStatus.CONFLICT);
+            }
+        }
     }
 }

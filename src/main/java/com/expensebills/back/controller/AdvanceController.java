@@ -19,11 +19,17 @@ import java.util.List;
 @RequestMapping("/advance")
 @RestController
 public class AdvanceController {
-    @Autowired AdvanceService advanceService;
+    @Autowired
+    AdvanceService advanceService;
     @Autowired
     DateService dateService;
     @Autowired
     MissionService missionService;
+
+    @GetMapping("/askforvalidation")
+    public Advance askForValidation(@RequestParam int id) throws AdvanceException {
+        return this.advanceService.askForValidation(id);
+    }
 
     @GetMapping("/new")
     public Advance createNewAdvance(@RequestParam float amount,
@@ -40,8 +46,7 @@ public class AdvanceController {
         * @Returns : the object Advance that was created.
         * */
 
-
-        Advance a = this.advanceService.saveAdvance(Advance.builder()
+        return this.advanceService.saveAdvance(Advance.builder()
                 .amount(amount)
                 .date(LocalDate.now())
                 .description(description)
@@ -49,8 +54,6 @@ public class AdvanceController {
                 .mission(missionService.findById(idMission))
                 .state(BillStates.DRAFT)
                 .build());
-
-        return a;
     }
 
     @GetMapping("/delete")
@@ -63,14 +66,8 @@ public class AdvanceController {
         return this.advanceService.getAdvanceList();
     }
 
-
-    @GetMapping("/askforvalidation")
-    public Advance askForValidation(@RequestParam int id) throws AdvanceException {
-        return this.advanceService.askForValidation(id);
-    }
-
     @GetMapping("/validation")
-    public Advance validation(@RequestParam int id) throws AdvanceException, ExpenseBillException, DateException {
+    public Advance validation(@RequestParam int id) throws AdvanceException {
         return this.advanceService.validation(id);
     }
 

@@ -11,6 +11,17 @@ import java.time.format.DateTimeFormatter;
 public class DateService {
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+    public void checkDateMission(LocalDate dateBegining, LocalDate dateEnding) throws DateException {
+        System.out.println(dateBegining.isAfter(dateEnding));
+        System.out.println(dateEnding.isAfter(LocalDate.now()));
+        if(dateBegining.isAfter(dateEnding)){
+            throw new DateException("Beginning date is after ending date", HttpStatus.BAD_REQUEST);
+        }
+        else if(dateEnding.isBefore(LocalDate.now())){
+            throw new DateException("Date of mission is before today ", HttpStatus.BAD_REQUEST);
+        }
+    }
+
     public LocalDate parseDate(String date) {
         LocalDate parseDate;
         parseDate = LocalDate.parse(date, formatter);

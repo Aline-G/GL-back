@@ -26,7 +26,7 @@ FROM line_bill;
 
 INSERT INTO mission (id, name, date_begining, date_ending, state, description)
 VALUES (1, 'Vider les poubelles', '2022-01-06', '2022-07-12', 0, 'ramasser tous les sacs'),
-       (2, 'Charme', '2022-01-06', '2022-08-24', 0, 'Charmer les clients');
+       (2, 'Nouveau client', '2022-01-06', '2022-08-24', 0, 'Signer les contrats des dossiers Dupont');
 
 INSERT INTO expense_bill(id, amount, date, description, name, state)
 VALUES (1, 300, '2022-01', '', '', 0),

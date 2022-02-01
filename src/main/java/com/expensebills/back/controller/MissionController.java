@@ -25,6 +25,11 @@ public class MissionController {
     @Autowired
     DateService dateService;
 
+    @GetMapping("/changestate")
+    public HttpStatus changeState(int idMission, String state) throws MissionException {
+        return this.missionService.changeState(idMission, state);
+    }
+
     @GetMapping("/new")
     public Mission createNewMission(@RequestParam String name,
                                     @RequestParam String description,
@@ -34,19 +39,16 @@ public class MissionController {
         LocalDate dateB = dateService.parseDate(dateBegining) ;
         LocalDate dateE = dateService.parseDate(dateEnding);
 
-        this.missionService.checkDate(dateB, dateE);
+        this.dateService.checkDateMission(dateB, dateE);
 
-        Mission m = this.missionService.saveMission(Mission.builder()
+        return this.missionService.saveMission(Mission.builder()
                 .name(name)
                 .description(description)
                 .dateBegining(dateB)
                 .dateEnding(dateE)
                 .state(this.missionService.getState(dateB, dateE))
                 .build());
-        return m;
     }
-
-
 
     @GetMapping("/delete")
     public HttpStatus deleteMission(int id) throws MissionException {
@@ -59,10 +61,6 @@ public class MissionController {
         return this.missionService.getMissionList();
     }
 
-    @GetMapping("/changestate")
-    public HttpStatus changeState(int idMission, String state) throws MissionException {
-        return this.missionService.changeState(idMission, state);
-    }
 
 
     //TRAITEMENT DES EXCEPTIONS

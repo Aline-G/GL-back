@@ -70,7 +70,6 @@ public class LineBillController {
         this.expenseBillService.existsById(idExpenseBill);
         this.expenseBillService.checkState(idExpenseBill);
 
-
         LineBill l = this.lineBillService.saveLineBill(LineBill.builder()
                 .amount(amount)
                 .isValidated(false)
@@ -103,6 +102,12 @@ public class LineBillController {
         return this.lineBillService.deleteLineBill(id);
     }
 
+    @GetMapping("/calculamount")
+    public double getAmountMealExpense(@RequestParam Float nbKm,
+                                       @RequestParam int nbFiscalHorsepower) throws LineBillException {
+        return this.lineBillService.calculAmount(nbKm,nbFiscalHorsepower);
+    }
+
     @GetMapping("/list")
     public List<LineBill> getLineBillList() {
         return this.lineBillService.getLineBillList();
@@ -113,13 +118,7 @@ public class LineBillController {
         return this.lineBillService.getLineBillListByIdExpense(id);
     }
 
-    @GetMapping("/calculamount")
-    public double getAmountMealExpense(@RequestParam Float nbKm,
-                                       @RequestParam int nbFiscalHorsepower) throws LineBillException {
-        return this.lineBillService.calculAmount(nbKm,nbFiscalHorsepower);
-    }
-
-    // TODO rajouter le userId dans la fonction pour s'assuerer que c'est un manager qui fait la demande
+    // TODO rajouter le userId dans la fonction pour s'assurer que c'est un manager qui fait la demande
     @GetMapping("/validation")
     public HttpStatus validLineBill(@RequestParam int lineBillId) throws LineBillException, ExpenseBillException {
         return this.lineBillService.validLineBill(lineBillId);
@@ -127,7 +126,7 @@ public class LineBillController {
 
 
     //TODO update et penser a mettre à jour les parametres de la fonction
-    @GetMapping("/update")
+    /*@GetMapping("/update")
     public LineBill updateLineBill(@RequestParam int id,
                                    @RequestParam (required = false)Float amount,
                                    @RequestParam (required = false) Float tvaPercent,
@@ -137,7 +136,7 @@ public class LineBillController {
         LineBill lineBill = lineBillService.getLine(id);
 
         return lineBillService.updateLine(id);
-    }
+    }*/
 
     //TRAITEMENT DES EXCEPTIONS
     @ExceptionHandler(FunctionalException.class)
