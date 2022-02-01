@@ -161,12 +161,19 @@ public class ExpenseBillService {
         return false;
     }*/
 
+    public HttpStatus refuseExpenseBill(int expenseBillId) throws ExpenseBillException {
+        if (!this.expenseBillRepository.existsById(expenseBillId)) {
+            throw new ExpenseBillException("Impossible to update an inexisting expenseBill", HttpStatus.CONFLICT);
+        }
+        setStateDraft(expenseBillId);
+        return(HttpStatus.OK);
+    }
+
     public ExpenseBill saveExpenseBill(ExpenseBill expenseBill) throws ExpenseBillException {
 
         if (this.expenseBillRepository.existsById(expenseBill.getId())) {
             throw new ExpenseBillException("Id of the bill already exists", HttpStatus.CONFLICT);
         }
-
         return this.expenseBillRepository.save(expenseBill);
     }
 
@@ -181,14 +188,20 @@ public class ExpenseBillService {
             throw new ExpenseBillException("Can't ask validation for an empty expenseBill", HttpStatus.BAD_REQUEST);
         }
         expenseBill.setState(BillStates.WAITING);
-        expenseBillRepository.save(expenseBill);
+        this.expenseBillRepository.save(expenseBill);
         return expenseBill;
+    }
+
+    public void setStateDraft(int expenseBillId){
+        ExpenseBill expenseBill = expenseBillRepository.findById(expenseBillId);
+        expenseBill.setState(BillStates.DRAFT);
+        this.expenseBillRepository.save(expenseBill);
     }
 
     public void setStateValidated(int expenseBillId){
         ExpenseBill expenseBill = expenseBillRepository.findById(expenseBillId);
         expenseBill.setState(BillStates.VALIDATED);
-        expenseBillRepository.save(expenseBill);
+        this.expenseBillRepository.save(expenseBill);
     }
 
     public HttpStatus validExpenseBill(int expenseBillId) throws ExpenseBillException {

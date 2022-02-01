@@ -66,6 +66,11 @@ public class AdvanceController {
         return this.advanceService.getAdvanceList();
     }
 
+    @GetMapping("/refusal")
+    public HttpStatus refuseAdvance(@RequestParam int advanceId) throws AdvanceException {
+        return this.advanceService.refuseExpenseBill(advanceId);
+    }
+
     @GetMapping("/validation")
     public Advance validation(@RequestParam int id) throws AdvanceException {
         return this.advanceService.validation(id);

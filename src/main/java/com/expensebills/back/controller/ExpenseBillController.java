@@ -73,8 +73,13 @@ public class ExpenseBillController {
         return this.expenseBillService.getNumberBillsNonValidated();
     }
 
+    @GetMapping("/refusal")
+    public HttpStatus refuseExpenseBill(@RequestParam int expenseBillId) throws ExpenseBillException {
+        return this.expenseBillService.refuseExpenseBill(expenseBillId);
+    }
+
     @GetMapping("/sendValidation")
-    public ExpenseBill sendForValidation(int expenseBillId) throws ExpenseBillException {
+    public ExpenseBill sendForValidation(@RequestParam int expenseBillId) throws ExpenseBillException {
         return this.expenseBillService.sendForValidation(expenseBillId);
     }
 

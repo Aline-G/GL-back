@@ -46,8 +46,13 @@ public class AdvanceService {
         if (this.advanceRepository.existsById(advance.getId())) {
             throw new AdvanceException("Id advance already exist", HttpStatus.CONFLICT);
         }
-
         return this.advanceRepository.save(advance);
+    }
+
+    public void setStateDraft(int advanceId){
+        Advance advance = advanceRepository.findById(advanceId);
+        advance.setState(BillStates.DRAFT);
+        this.advanceRepository.save(advance);
     }
 
     public Advance validation(int id) throws AdvanceException {
@@ -62,7 +67,13 @@ public class AdvanceService {
         this.advanceRepository.save(advance);
         this.expenseBillService.addAdvanceToCurrentBill(advance);
         return advance;
+    }
 
-
+    public HttpStatus refuseExpenseBill(int advanceId) throws AdvanceException {
+        if (!this.advanceRepository.existsById(advanceId)) {
+            throw new AdvanceException("Impossible to update an inexisting advance", HttpStatus.CONFLICT);
+        }
+        setStateDraft(advanceId);
+        return(HttpStatus.OK);
     }
 }
