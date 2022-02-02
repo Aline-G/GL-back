@@ -28,9 +28,7 @@ public class ExpenseBillController {
 
 
     @GetMapping("/new")
-    public ExpenseBill createNewExpenseBill(@RequestParam String name,
-                                         @RequestParam String description,
-                                         @RequestParam String date) throws ExpenseBillException {
+    public ExpenseBill createNewExpenseBill(@RequestParam String date) throws ExpenseBillException {
         /*
          * Function that creates a new expenseBill in the data base.
          * When an bill is created its state is DRAFT
@@ -46,9 +44,7 @@ public class ExpenseBillController {
                 .amount(0)
                 .listLineBill(new ArrayList<>())
                 .listAdvance(new ArrayList<>())
-                .name(name)
                 .date(date)
-                .description(description)
                 .state(BillStates.DRAFT)
                 .build());
     }

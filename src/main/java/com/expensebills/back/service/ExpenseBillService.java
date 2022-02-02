@@ -49,9 +49,7 @@ public class ExpenseBillService {
                     .amount(0)
                     .listLineBill(new ArrayList<>())
                     .listAdvance(listAdvance)
-                    .name("")
                     .date(expenseBillDate)
-                    .description("")
                     .state(BillStates.DRAFT)
                     .build());
         }
