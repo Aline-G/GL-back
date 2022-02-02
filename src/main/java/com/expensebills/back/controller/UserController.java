@@ -1,6 +1,7 @@
 package com.expensebills.back.controller;
 
 import com.expensebills.back.exception.TeamException;
+import com.expensebills.back.exception.UserException;
 import com.expensebills.back.service.ManagerService;
 import com.expensebills.back.service.TeamService;
 import com.expensebills.back.service.UserService;
@@ -29,6 +30,11 @@ public class UserController {
     @GetMapping("/new")
     public User createNewProfile(@RequestParam String name, @RequestParam String firstname, @RequestParam String mail,
                                  @RequestParam int idTeam) {
+        try {
+            UserService.checkMailFormat(mail);
+        } catch (UserException e) {
+            e.printStackTrace();
+        }
 
         User u = null;
         try {
@@ -37,7 +43,6 @@ public class UserController {
         } catch (TeamException e) {
             e.printStackTrace();
         }
-
         return u;
     }
 

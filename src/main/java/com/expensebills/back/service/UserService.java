@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -59,5 +61,26 @@ public class UserService {
     public HttpStatus changeUserTeam(int id, Team workTeam) {
         this.userRepository.findById(id).setWorkTeam(workTeam);
         return HttpStatus.OK;
+    }
+
+    /**
+     * check given string against this regex : ^.+@.+$
+     * This just assumes an email contains a à symbol match all the officialy valid addresses.
+     * Further address filtering should be done with trying sending an email to the given address.
+     *
+     * https://codefool.tumblr.com/post/15288874550/list-of-valid-and-invalid-email-addresses
+     * https://en.wikipedia.org/wiki/Email_address#Validation_and_verification
+     *
+     * @param mail the mail to check
+     */
+    public static void checkMailFormat(String mail) throws UserException {
+        if (mail == null) {
+            throw new UserException("Adresse mail nulle", HttpStatus.BAD_REQUEST);
+        }
+        Pattern macPattern = Pattern.compile("^.+@.+$");
+        Matcher m = macPattern.matcher(mail.toLowerCase().strip());
+        if (!m.matches()) {
+            throw new UserException("Format adresse mail non valide", HttpStatus.CONFLICT);
+        }
     }
 }
