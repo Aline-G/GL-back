@@ -119,6 +119,7 @@ public class ExpenseBillService {
     }
 
     public List<ExpenseBill> getExpenseBillListByUserId(int userId) {
+        System.out.println("je suis passé par la");
         return this.expenseBillRepository.findAllByUserId(userId);
     }
 

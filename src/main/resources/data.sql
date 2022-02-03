@@ -3,10 +3,10 @@ INSERT INTO mission (id, name, date_begining, date_ending, state, description)
 VALUES (1, 'Vider les poubelles', '2022-01-06', '2022-07-12', 0, 'ramasser tous les sacs'),
        (2, 'Nouveau client', '2022-01-06', '2022-08-24', 0, 'Signer les contrats des dossiers Dupont');
 
-INSERT INTO expense_bill(id, amount, date, state, user_id, manager_id)
-VALUES (1, 300, '2022-01',0,1,3),
-       (2, 500, '2022-02',0,3,4),
-       (3, 0, '2021-12', 0,2,3);
+INSERT INTO expense_bill(id, amount, date, state, user_id)
+VALUES (1, 300, '2022-01',0,1),
+       (2, 500, '2022-02',0,3),
+       (3, 0, '2021-12', 0,2);
 
 INSERT INTO line_bill (id, amount, amount_without_taxes, category, conveyance, country, date, description,
                        fiscal_horsepower, guests_name, hebergement_place, id_expense_bill, is_validated, justificatif,

@@ -33,9 +33,9 @@ public class ExpenseBill {
     private float amount;
     private BillStates state;
 
-    @ManyToOne
+    /*@ManyToOne
     @JoinColumn(name = "manager_id")
-    private Manager manager;
+    private Manager manager;*/
 
     private int  userId;
 
