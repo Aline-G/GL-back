@@ -13,6 +13,4 @@ public interface ExpenseBillRepository extends CrudRepository<ExpenseBill, Integ
 
     ExpenseBill findById(int id);
 
-
-    List<ExpenseBill> findAllByUserId(int id);
 }

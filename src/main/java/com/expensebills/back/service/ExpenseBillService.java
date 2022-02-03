@@ -119,8 +119,14 @@ public class ExpenseBillService {
     }
 
     public List<ExpenseBill> getExpenseBillListByUserId(int userId) {
-        System.out.println("je suis passé par la");
-        return this.expenseBillRepository.findAllByUserId(userId);
+        List<ExpenseBill> expenseBillList = this.getExpenseBillList();
+        List<ExpenseBill> expenseBillListSorted = new ArrayList<>();
+        for(ExpenseBill e : expenseBillList){
+            if( e.getId() == userId){
+                expenseBillListSorted.add(e);
+            }
+        }
+        return expenseBillListSorted;
     }
 
     public String getMonth(String date){return date.substring(5, 7);}
