@@ -22,6 +22,7 @@ public class Advance {
     private String name;
     private String description;
     private BillStates state;
+    private int  userId;
 
     @ManyToOne
     @JoinTable(

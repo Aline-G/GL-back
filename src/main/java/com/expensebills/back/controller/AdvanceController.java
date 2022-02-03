@@ -6,6 +6,7 @@ import com.expensebills.back.service.DateService;
 import com.expensebills.back.service.MissionService;
 import com.expensebills.back.vo.Advance;
 import com.expensebills.back.vo.BillStates;
+import com.expensebills.back.vo.ExpenseBill;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,7 @@ public class AdvanceController {
     public Advance createNewAdvance(@RequestParam float amount,
                                         @RequestParam String description,
                                         @RequestParam String name,
+                                        @RequestParam int userId,
                                         @RequestParam int idMission) throws MissionException, AdvanceException {
         /*
         * Function that creates a new advance in the data base.
@@ -51,6 +53,7 @@ public class AdvanceController {
                 .date(LocalDate.now())
                 .description(description)
                 .name(name)
+                .userId(userId)
                 .mission(missionService.findById(idMission))
                 .state(BillStates.DRAFT)
                 .build());
@@ -64,6 +67,11 @@ public class AdvanceController {
     @GetMapping("/list")
     public List<Advance> getAdvanceBillList() {
         return this.advanceService.getAdvanceList();
+    }
+
+    @GetMapping("/listbyuserid")
+    public List<Advance> getAdvanceListByUserId(@RequestParam int userId) {
+        return this.advanceService.getAdvanceListByUserId(userId);
     }
 
     @GetMapping("/refusal")

@@ -4,10 +4,12 @@ import com.expensebills.back.exception.AdvanceException;
 import com.expensebills.back.repository.AdvanceRepository;
 import com.expensebills.back.vo.Advance;
 import com.expensebills.back.vo.BillStates;
+import com.expensebills.back.vo.ExpenseBill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -40,6 +42,17 @@ public class AdvanceService {
 
     public List<Advance> getAdvanceList() {
         return StreamSupport.stream(this.advanceRepository.findAll().spliterator(), false).collect(Collectors.toList());
+    }
+
+    public List<Advance> getAdvanceListByUserId(int userId) {
+        List<Advance> advanceList = this.getAdvanceList();
+        List<Advance> advanceListSorted = new ArrayList<>();
+        for(Advance a : advanceList){
+            if( a.getId() == userId){
+                advanceListSorted.add(a);
+            }
+        }
+        return advanceListSorted;
     }
 
     public Advance saveAdvance(Advance advance) throws AdvanceException {
