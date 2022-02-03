@@ -37,6 +37,8 @@ public class ExpenseBill {
     @JoinColumn(name = "manager_id")
     private Manager manager;
 
+    private int  userId;
+
     //TODO User
 
 

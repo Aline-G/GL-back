@@ -118,6 +118,10 @@ public class ExpenseBillService {
         return StreamSupport.stream(this.expenseBillRepository.findAll().spliterator(), false).collect(Collectors.toList());
     }
 
+    public List<ExpenseBill> getExpenseBillListByUserId(int userId) {
+        return this.expenseBillRepository.findAllByUserId(userId);
+    }
+
     public String getMonth(String date){return date.substring(5, 7);}
 
     public int getNumberBillsNonValidated() {

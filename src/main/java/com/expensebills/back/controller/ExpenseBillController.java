@@ -28,7 +28,8 @@ public class ExpenseBillController {
 
 
     @GetMapping("/new")
-    public ExpenseBill createNewExpenseBill(@RequestParam String date) throws ExpenseBillException {
+    public ExpenseBill createNewExpenseBill(@RequestParam String date,
+                                            @RequestParam int userId) throws ExpenseBillException {
         /*
          * Function that creates a new expenseBill in the data base.
          * When an bill is created its state is DRAFT
@@ -44,6 +45,7 @@ public class ExpenseBillController {
                 .amount(0)
                 .listLineBill(new ArrayList<>())
                 .listAdvance(new ArrayList<>())
+                .userId(userId)
                 .date(date)
                 .state(BillStates.DRAFT)
                 .build());
@@ -57,6 +59,11 @@ public class ExpenseBillController {
     @GetMapping("/list")
     public List<ExpenseBill> getExpenseBillList() {
         return this.expenseBillService.getExpenseBillList();
+    }
+
+    @GetMapping("/listbyuserid")
+    public List<ExpenseBill> getExpenseBillListByUserId(@RequestParam int userId) {
+        return this.expenseBillService.getExpenseBillListByUserId(userId);
     }
 
     @GetMapping("/getwithid")
