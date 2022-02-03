@@ -31,7 +31,8 @@ public class TeamController {
 
         Team t = null;
         try {
-            t = this.teamService.saveTeam(Team.builder().name(name).leader(this.userService.getManager(idManager)).build());
+            Manager user = this.userService.getManager(idManager); // TODO block if already manager
+            t = this.teamService.saveTeam(Team.builder().name(name).leader(user).build());
         } catch (TeamException | UserException e) {
             e.printStackTrace();
         }
@@ -42,6 +43,11 @@ public class TeamController {
     @GetMapping("/delete")
     public HttpStatus deleteTeam(@RequestParam int id) {
         return this.teamService.deleteTeam(id);
+    }
+
+    @GetMapping("/changemanager")
+    public HttpStatus updateManager(@RequestParam int teamId, @RequestParam int managerId) {
+        return this.teamService.updateManager(teamId, managerId);
     }
 
     @GetMapping("/list")

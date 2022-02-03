@@ -2,7 +2,9 @@ package com.expensebills.back.service;
 
 import com.expensebills.back.exception.TeamException;
 import com.expensebills.back.repository.TeamRepository;
+import com.expensebills.back.vo.Manager;
 import com.expensebills.back.vo.Team;
+import com.expensebills.back.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -26,7 +28,7 @@ public class TeamService {
 
     public HttpStatus deleteTeam(int id) {
         Team target = this.teamRepository.findById(id);
-        if (target != null) this.teamRepository.delete(target);
+        if (target != null) this.teamRepository.delete(target); // TODO BROKEN : constraint failure, fixing it after removing Manager class
         else return HttpStatus.NOT_FOUND;
         return HttpStatus.OK;
     }
@@ -35,10 +37,20 @@ public class TeamService {
         return StreamSupport.stream(this.teamRepository.findAll().spliterator(), false).collect(Collectors.toList());
     }
 
+    public List<Team> findTeamsWithLeader(int idLeader) {
+        return StreamSupport.stream(this.teamRepository.findAll().spliterator(), false).collect(
+                Collectors.filtering(team -> team.getLeader().getId() == idLeader, Collectors.toList()));
+    }
+
     public Team findById(int id) throws TeamException {
         if (!this.teamRepository.existsById(id)) {
             throw new TeamException("Team " + id + " doesn't exist", HttpStatus.NOT_FOUND);
         }
         return this.teamRepository.findById(id);
+    }
+
+    public HttpStatus updateManager(int teamId, int managerId) {
+        // TODO check managerId has not already a team
+        return HttpStatus.OK;
     }
 }

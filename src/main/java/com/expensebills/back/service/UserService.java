@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,6 +20,7 @@ import java.util.stream.StreamSupport;
 public class UserService {
 
     @Autowired private UserRepository userRepository;
+    @Autowired private TeamService teamService;
 
     public List<User> getUserList() {
         return StreamSupport.stream(this.userRepository.findAll().spliterator(), false).collect(Collectors.toList());
@@ -42,6 +44,11 @@ public class UserService {
 
     public HttpStatus deleteUser(int id) {
         User target = this.userRepository.findById(id);
+        List<Team> teams = this.teamService.findTeamsWithLeader(id);
+        if (teams != null && !teams.isEmpty()) {
+            System.err.println("Attempting to delete user " + target.getId() + " which is leader of teams " + Arrays.toString(teams.toArray()));
+            return HttpStatus.BAD_REQUEST;
+        }
         if (target != null) this.userRepository.delete(target);
         else return HttpStatus.NOT_FOUND;
         return HttpStatus.OK;

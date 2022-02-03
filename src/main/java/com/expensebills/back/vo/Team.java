@@ -19,5 +19,10 @@ public class Team {
     @OneToOne(orphanRemoval = true)
     @JoinColumn(name = "leader_id")
     private Manager leader;
+
+    @Override
+    public String toString() {
+        return "Team{" + "id=" + id + ", name='" + name + '\'' + ", leader=" + leader.getId() + '}';
+    }
 }
 

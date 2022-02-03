@@ -46,19 +46,8 @@ public class UserController {
         return u;
     }
 
-    @GetMapping("/tempnew")
-    public User createNewProfile(@RequestParam String name, @RequestParam String firstname, @RequestParam String mail,
-                                 @RequestParam boolean isManager) {
-        User u;
-        if (isManager) u = this.userService.saveUser(User.builder().name(name).firstname(firstname).mail(mail).build());
-        else u = this.userService.saveUser(Manager.builder().name(name).firstname(firstname).mail(mail).build());
-        //else u = this.managerService.saveManager(Manager.builder().name(name).firstname(firstname).mail(mail).build());
-        return u;
-    }
-
     @GetMapping("/delete")
     public HttpStatus deleteUser(@RequestParam int id) {
-
         return this.userService.deleteUser(id);
     }
 
