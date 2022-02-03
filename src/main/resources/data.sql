@@ -17,10 +17,10 @@ VALUES (1, 500, 488, 0, '', 'France', '2022-12-06', 'Invitation des clients au r
         'Achat d un robot netoyant pour vider les poubelles automatiquement', 0, '', '', 2, FALSE, null, 0, 'Carte', '',
         '', 50, '');
 
-INSERT INTO advance (id, amount, date, description, name, state)
-VALUES (1, 1000, '2022-01-15', 'Pour payer des vacances pour les clients', 'vacances', 0),
-       (2, 300, '2022-01-03', 'pour payer des femmes de ménage', 'menage', 1),
-       (3, 300, '2022-01-03', 'pour payer des services', 'menage', 2);
+INSERT INTO advance (id, amount, date, description, name, state, user_id)
+VALUES (1, 1000, '2022-01-15', 'Pour payer des vacances pour les clients', 'vacances', 0, 1),
+       (2, 300, '2022-01-03', 'pour payer des femmes de ménage', 'menage', 1, 3),
+       (3, 300, '2022-01-03', 'pour payer des services', 'menage', 2,2);
 
 INSERT INTO user(dtype, id, firstname, mail, name)
 VALUES ('User', 1, 'nono', 'nono.bobo@pouet.xxx', 'bobo'),
