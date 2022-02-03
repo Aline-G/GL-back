@@ -39,7 +39,7 @@ public class ExpenseBillController {
          * @Returns : the object ExpenseBill that was created.
          * */
 
-        expenseBillService.verifDate(date);
+        expenseBillService.verifDate(date, userId);
 
         return this.expenseBillService.saveExpenseBill(ExpenseBill.builder()
                 .amount(0)

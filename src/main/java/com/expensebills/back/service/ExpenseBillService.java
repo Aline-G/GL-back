@@ -232,8 +232,8 @@ public class ExpenseBillService {
     }
 
 
-    public void verifDate(String date) throws ExpenseBillException {
-        List<ExpenseBill> list = getExpenseBillList();
+    public void verifDate(String date, int userId) throws ExpenseBillException {
+        List<ExpenseBill> list = getExpenseBillListByUserId(userId);
         for(ExpenseBill e : list){
             if(e.getDate().equals(date)){
                 throw new ExpenseBillException("A bill already has this date",HttpStatus.CONFLICT);
