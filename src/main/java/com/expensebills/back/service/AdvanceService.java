@@ -48,7 +48,7 @@ public class AdvanceService {
         List<Advance> advanceList = this.getAdvanceList();
         List<Advance> advanceListSorted = new ArrayList<>();
         for(Advance a : advanceList){
-            if( a.getId() == userId){
+            if( a.getUserId() == userId){
                 advanceListSorted.add(a);
             }
         }
