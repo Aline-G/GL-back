@@ -1,11 +1,8 @@
 package com.expensebills.back.controller;
 
 import com.expensebills.back.exception.TeamException;
-import com.expensebills.back.exception.UserException;
-import com.expensebills.back.service.ManagerService;
 import com.expensebills.back.service.TeamService;
 import com.expensebills.back.service.UserService;
-import com.expensebills.back.vo.Manager;
 import com.expensebills.back.vo.Team;
 import com.expensebills.back.vo.User;
 import lombok.Getter;
@@ -27,16 +24,20 @@ public class TeamController {
     @Autowired private UserService userService;
 
     @GetMapping("/new")
-    public Team createNewService(@RequestParam String name, @RequestParam int idManager) {
+    public Team createNewService(@RequestParam String name, @RequestParam int managerId) {
 
         Team t = null;
         try {
-            Manager user = this.userService.getManager(idManager); // TODO block if already manager
-            t = this.teamService.saveTeam(Team.builder().name(name).leader(user).build());
-        } catch (TeamException | UserException e) {
+            User user = this.userService.getUser(managerId);
+            if (user != null) {
+                List<Team> teams = this.teamService.findTeamsWithLeader(managerId);
+                if (teams != null && !teams.isEmpty()) {
+                    System.err.println("User " + managerId + " is already a team leader.");
+                } else t = this.teamService.saveTeam(Team.builder().name(name).leader(user).build());
+            } else System.err.println("User " + managerId + " doesn't exist");
+        } catch (TeamException e) {
             e.printStackTrace();
         }
-
         return t;
     }
 

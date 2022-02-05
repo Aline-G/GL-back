@@ -2,7 +2,6 @@ package com.expensebills.back.service;
 
 import com.expensebills.back.exception.TeamException;
 import com.expensebills.back.repository.TeamRepository;
-import com.expensebills.back.vo.Manager;
 import com.expensebills.back.vo.Team;
 import com.expensebills.back.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,7 @@ import java.util.stream.StreamSupport;
 public class TeamService {
 
     @Autowired TeamRepository teamRepository;
+    @Autowired UserService userService;
 
     public Team saveTeam(Team team) throws TeamException {
         if (this.teamRepository.existsById(team.getId())) {
@@ -28,7 +28,8 @@ public class TeamService {
 
     public HttpStatus deleteTeam(int id) {
         Team target = this.teamRepository.findById(id);
-        if (target != null) this.teamRepository.delete(target); // TODO BROKEN : constraint failure, fixing it after removing Manager class
+        if (target != null) this.teamRepository.delete(
+                target); // TODO BROKEN : constraint failure, fixing it after removing Manager class
         else return HttpStatus.NOT_FOUND;
         return HttpStatus.OK;
     }
@@ -42,6 +43,11 @@ public class TeamService {
                 Collectors.filtering(team -> team.getLeader().getId() == idLeader, Collectors.toList()));
     }
 
+    public List<User> getLeadersList() {
+        return StreamSupport.stream(this.teamRepository.findAll().spliterator(), false).map(Team::getLeader)
+                            .collect(Collectors.toList());
+    }
+
     public Team findById(int id) throws TeamException {
         if (!this.teamRepository.existsById(id)) {
             throw new TeamException("Team " + id + " doesn't exist", HttpStatus.NOT_FOUND);
@@ -50,7 +56,26 @@ public class TeamService {
     }
 
     public HttpStatus updateManager(int teamId, int managerId) {
-        // TODO check managerId has not already a team
+        List<Team> teams = findTeamsWithLeader(managerId);
+        if (teams != null && !teams.isEmpty()) {
+            System.err.println("User " + managerId + " is already a team leader.");
+            return HttpStatus.BAD_REQUEST;
+        }
+        try {
+            findById(teamId).setLeader(userService.getUser(managerId));
+        } catch (TeamException e) {
+            e.printStackTrace();
+        }
         return HttpStatus.OK;
     }
+
+    // public void validateBill(ExpenseBill bill) {
+    //     if (billsToValidate.contains(bill)) {
+    //         // TODO other stuff
+    //         bill.setState(BillStates.VALIDATED);
+    //         billsToValidate.remove(bill);
+    //     } else {
+    //         // TODO error ?
+    //     }
+    // }
 }

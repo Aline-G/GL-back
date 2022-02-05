@@ -2,10 +2,8 @@ package com.expensebills.back.controller;
 
 import com.expensebills.back.exception.TeamException;
 import com.expensebills.back.exception.UserException;
-import com.expensebills.back.service.ManagerService;
 import com.expensebills.back.service.TeamService;
 import com.expensebills.back.service.UserService;
-import com.expensebills.back.vo.Manager;
 import com.expensebills.back.vo.Team;
 import com.expensebills.back.vo.User;
 import lombok.Getter;
@@ -24,26 +22,17 @@ import java.util.List;
 public class UserController {
 
     @Autowired private UserService userService;
-    @Autowired private ManagerService managerService;
     @Autowired private TeamService teamService;
 
     @GetMapping("/new")
-    public User createNewProfile(@RequestParam String name, @RequestParam String firstname, @RequestParam String mail,
-                                 @RequestParam int idTeam) {
+    public User createNewProfile(@RequestParam String name, @RequestParam String firstname, @RequestParam String mail) {
         try {
             UserService.checkMailFormat(mail);
         } catch (UserException e) {
             e.printStackTrace();
         }
 
-        User u = null;
-        try {
-            u = this.userService.saveUser(User.builder().name(name).firstname(firstname).mail(mail)
-                                              .workTeam(this.teamService.findById(idTeam)).build());
-        } catch (TeamException e) {
-            e.printStackTrace();
-        }
-        return u;
+        return this.userService.saveUser(User.builder().name(name).firstname(firstname).mail(mail).build());
     }
 
     @GetMapping("/delete")
@@ -53,16 +42,24 @@ public class UserController {
 
     @GetMapping("/ismanager")
     public boolean isManager(@RequestParam int id) {
-        return this.userService.getUser(id) instanceof Manager;
+        List<Team> teams = this.teamService.findTeamsWithLeader(id);
+        if (teams == null) return false;
+        return !teams.isEmpty() && teams.get(0).getLeader().getId() == id; // technically this check is redundant
+    }
+
+    @GetMapping("/changeteam")
+    public HttpStatus changeTeam(@RequestParam int userId, @RequestParam int teamId) {
+        try {
+            this.userService.getUser(userId).setWorkTeam(this.teamService.findById(teamId));
+            return HttpStatus.OK;
+        } catch (TeamException e) {
+            e.printStackTrace();
+        }
+        return HttpStatus.BAD_REQUEST;
     }
 
     @GetMapping("/list")
     public List<User> getUserList() {
         return this.userService.getUserList();
-    }
-
-    @GetMapping("/listmanagers")
-    public List<Manager> getManagerList() {
-        return this.userService.getManagerList();
     }
 }
