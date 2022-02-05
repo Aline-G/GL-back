@@ -119,7 +119,7 @@ public class ExpenseBillService {
         List<ExpenseBill> expenseBillList = this.getExpenseBillList();
         List<ExpenseBill> expenseBillListSorted = new ArrayList<>();
         for(ExpenseBill e : expenseBillList){
-            if( e.getUserId() == userId){
+            if( e.getUser().getId() == userId){
                 expenseBillListSorted.add(e);
             }
         }

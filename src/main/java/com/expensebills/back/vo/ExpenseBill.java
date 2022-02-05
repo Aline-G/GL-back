@@ -28,9 +28,11 @@ public class ExpenseBill {
     private float amount;
     private BillStates state;
 
-    private int  userId; // TODO what is it ?
     @ManyToOne
     @JoinColumn(name = "manager_id")
     private User manager;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }
