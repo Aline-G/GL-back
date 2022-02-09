@@ -72,8 +72,8 @@ public class ExpenseBillController {
     }
 
     @GetMapping("/numberNotesNonValidated")
-    public int getNumberBillsNonValidated() {
-        return this.expenseBillService.getNumberBillsNonValidated();
+    public int getNumberBillsNonValidated(@RequestParam int userId) {
+        return this.expenseBillService.getNumberBillsNonValidated(userId);
     }
 
     @GetMapping("/refusal")
@@ -87,8 +87,8 @@ public class ExpenseBillController {
     }
 
     @GetMapping("/total")
-    public float totalExpenseBill() {
-        return this.expenseBillService.getTotal();
+    public float totalExpenseBill(@RequestParam int userId) {
+        return this.expenseBillService.getTotal(userId);
     }
 
     //TODO verifier que c'est bien un manager qui fait la demande

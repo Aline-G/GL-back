@@ -131,11 +131,11 @@ public class ExpenseBillService {
 
     public String getMonth(String date){return date.substring(5, 7);}
 
-    public int getNumberBillsNonValidated() {
+    public int getNumberBillsNonValidated(int userId) {
         int res = 0;
         List<ExpenseBill> list = getExpenseBillList();
         for (ExpenseBill e : list){
-            if(e.getState() == BillStates.DRAFT || e.getState() == BillStates.WAITING){
+            if(e.getUserId()== userId && (e.getState() == BillStates.DRAFT || e.getState() == BillStates.WAITING)){
                 res+=1;
             }
         }
@@ -146,11 +146,11 @@ public class ExpenseBillService {
         return this.expenseBillRepository.findById(idExpenseBill).getState();
     }
 
-    public float getTotal() {
+    public float getTotal(int userId) {
         float total = 0;
         List<ExpenseBill> list = getExpenseBillList();
         for (ExpenseBill e : list){
-            if(e.getState() == BillStates.DRAFT || e.getState() == BillStates.WAITING){
+            if(e.getUserId()== userId && (e.getState() == BillStates.DRAFT || e.getState() == BillStates.WAITING)){
                 total+=e.getAmount();
             }
         }
