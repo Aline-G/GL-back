@@ -174,7 +174,7 @@ public class ExpenseBillService {
         if (!this.expenseBillRepository.existsById(expenseBillId)) {
             throw new ExpenseBillException("Impossible to update an inexisting expenseBill", HttpStatus.CONFLICT);
         }
-        setStateDraft(expenseBillId);
+        setStateRefused(expenseBillId);
         return(HttpStatus.OK);
     }
 
@@ -204,6 +204,11 @@ public class ExpenseBillService {
     public void setStateDraft(int expenseBillId){
         ExpenseBill expenseBill = expenseBillRepository.findById(expenseBillId);
         expenseBill.setState(BillStates.DRAFT);
+        this.expenseBillRepository.save(expenseBill);
+    }
+    public void setStateRefused(int expenseBillId){
+        ExpenseBill expenseBill = expenseBillRepository.findById(expenseBillId);
+        expenseBill.setState(BillStates.REFUSED);
         this.expenseBillRepository.save(expenseBill);
     }
 
