@@ -3,6 +3,7 @@ package com.expensebills.back.vo;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.File;
 import java.time.LocalDate;
 
 @Setter
@@ -41,6 +42,6 @@ public class LineBill {
     private String country;
     private int idExpenseBill;
     //TODO justificatif
-    private String justificatif;
+    private File supportingDocuments;
 
 }

@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
 import java.util.List;
 
 
@@ -43,15 +44,16 @@ public class LineBillController {
                                       @RequestParam int idMission,
                                       @RequestParam int idExpenseBill,
                                       @RequestParam String country,
-                                      @RequestParam  String paymentMethod,
-                                      @RequestParam  Integer km,
-                                      @RequestParam  String restoPlace,
-                                      @RequestParam  String hebergementPlace,
-                                      @RequestParam  String vehicle,
-                                      @RequestParam  String conveyance,
-                                      @RequestParam  Integer fiscalHorsepower,
-                                      @RequestParam  String registrationNumber,
-                                      @RequestParam  String guestsName) throws LineBillException, MissionException, ExpenseBillException {
+                                      @RequestParam String paymentMethod,
+                                      @RequestParam Integer km,
+                                      @RequestParam String restoPlace,
+                                      @RequestParam String hebergementPlace,
+                                      @RequestParam String vehicle,
+                                      @RequestParam String conveyance,
+                                      @RequestParam Integer fiscalHorsepower,
+                                      @RequestParam String registrationNumber,
+                                      @RequestParam File supportingDocuments,
+                                      @RequestParam String guestsName) throws LineBillException, MissionException, ExpenseBillException {
         /*
          * Function that creates a new lineBill in the database.
          * @Parameter amount : The total amount of the line free of tva
@@ -90,6 +92,7 @@ public class LineBillController {
                 .hebergementPlace(hebergementPlace)
                 .vehicle(vehicle)
                 .guestsName(guestsName)
+                .supportingDocuments(supportingDocuments)
                 .build());
 
         expenseBillService.addLineBill(l,idExpenseBill);

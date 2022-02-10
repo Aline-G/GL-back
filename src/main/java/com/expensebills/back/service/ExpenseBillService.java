@@ -135,7 +135,7 @@ public class ExpenseBillService {
         int res = 0;
         List<ExpenseBill> list = getExpenseBillList();
         for (ExpenseBill e : list){
-            if(e.getUserId()== userId && (e.getState() == BillStates.DRAFT || e.getState() == BillStates.WAITING)){
+            if(e.getUserId()== userId && (e.getState() == BillStates.DRAFT || e.getState() == BillStates.WAITING || e.getState() == BillStates.REFUSED)){
                 res+=1;
             }
         }
@@ -150,7 +150,7 @@ public class ExpenseBillService {
         float total = 0;
         List<ExpenseBill> list = getExpenseBillList();
         for (ExpenseBill e : list){
-            if(e.getUserId()== userId && (e.getState() == BillStates.DRAFT || e.getState() == BillStates.WAITING)){
+            if(e.getUserId()== userId && (e.getState() == BillStates.DRAFT || e.getState() == BillStates.WAITING || e.getState() == BillStates.REFUSED)){
                 total+=e.getAmount();
             }
         }
