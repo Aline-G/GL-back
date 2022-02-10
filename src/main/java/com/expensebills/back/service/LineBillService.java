@@ -87,12 +87,16 @@ public class LineBillService {
         }
         ExpenseBill e = this.expenseBillService.getExpenseBillById(expenseBillId);
         List<LineBill> finalList = new ArrayList<>();
+        float newAmount = e.getAmount();
         for (LineBill l : e.getListLineBill()){
             if(l.getId()!=id){
                 finalList.add(l);
+            }else{
+                newAmount-= l.getAmount();
             }
         }
         this.expenseBillService.getExpenseBillById(expenseBillId).setListLineBill(finalList);
+        this.expenseBillService.getExpenseBillById(expenseBillId).setAmount(newAmount);
 
         this.lineBillRepository.delete(this.lineBillRepository.findById(id));
         return HttpStatus.OK;
