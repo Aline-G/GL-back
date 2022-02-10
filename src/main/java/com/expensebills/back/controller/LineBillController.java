@@ -98,8 +98,9 @@ public class LineBillController {
     }
 
     @GetMapping("/delete")
-    public HttpStatus deleteLineBill(@RequestParam int id) throws LineBillException {
-        return this.lineBillService.deleteLineBill(id);
+    public HttpStatus deleteLineBill(@RequestParam int id,
+                                     @RequestParam int expenseBillId) throws LineBillException, ExpenseBillException {
+        return this.lineBillService.deleteLineBill(id,expenseBillId);
     }
 
     @GetMapping("/calculamount")

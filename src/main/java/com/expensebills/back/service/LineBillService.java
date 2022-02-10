@@ -4,6 +4,7 @@ import com.expensebills.back.exception.ExpenseBillException;
 import com.expensebills.back.exception.LineBillException;
 import com.expensebills.back.repository.LineBillRepository;
 import com.expensebills.back.vo.BillStates;
+import com.expensebills.back.vo.ExpenseBill;
 import com.expensebills.back.vo.LineBill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -79,11 +80,20 @@ public class LineBillService {
         }
     }
 
-    public HttpStatus deleteLineBill(int id) throws LineBillException {
+    public HttpStatus deleteLineBill(int id, int expenseBillId) throws LineBillException, ExpenseBillException {
         //Check existence of this id
         if(!lineBillRepository.existsById(id)){
             throw new LineBillException("Id doesn't exist", HttpStatus.BAD_REQUEST);
         }
+        ExpenseBill e = this.expenseBillService.getExpenseBillById(expenseBillId);
+        List<LineBill> finalList = new ArrayList<>();
+        for (LineBill l : e.getListLineBill()){
+            if(l.getId()!=id){
+                finalList.add(l);
+            }
+        }
+        this.expenseBillService.getExpenseBillById(expenseBillId).setListLineBill(finalList);
+
         this.lineBillRepository.delete(this.lineBillRepository.findById(id));
         return HttpStatus.OK;
     }
