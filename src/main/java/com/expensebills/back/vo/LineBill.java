@@ -17,7 +17,7 @@ public class LineBill {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
     private Float amount;
-    private boolean isValidated;
+    private LineBillSates state;
     private LineBillCategory category;
     private Float amountWithoutTaxes;
     private Float tva;
@@ -32,6 +32,8 @@ public class LineBill {
     private String vehicle;
     private String paymentMethod;
     private String guestsName;
+    //TODO justificatif
+    private String supportingDocuments;
 
     @ManyToOne
     @JoinTable(
@@ -41,7 +43,6 @@ public class LineBill {
     private Mission mission;
     private String country;
     private int idExpenseBill;
-    //TODO justificatif
-    private File supportingDocuments;
+
 
 }

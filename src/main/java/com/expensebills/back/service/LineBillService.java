@@ -6,6 +6,7 @@ import com.expensebills.back.repository.LineBillRepository;
 import com.expensebills.back.vo.BillStates;
 import com.expensebills.back.vo.ExpenseBill;
 import com.expensebills.back.vo.LineBill;
+import com.expensebills.back.vo.LineBillSates;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -167,12 +168,23 @@ public class LineBillService {
             throw new LineBillException("Impossible to update an inexisting lineBill", HttpStatus.CONFLICT);
         }
         LineBill lineBill = lineBillRepository.findById(lineBillId);
-        lineBill.setValidated(true);
+        lineBill.setState(LineBillSates.VALIDATED);
         lineBillRepository.save(lineBill);
 
         if(expenseBillService.allValidated(lineBill.getIdExpenseBill())){
             expenseBillService.setStateValidated(lineBill.getIdExpenseBill());
         }
+        return HttpStatus.OK;
+    }
+
+    public HttpStatus refuseLineBill(int lineBillId) throws LineBillException, ExpenseBillException {
+        if (!this.lineBillRepository.existsById(lineBillId)) {
+            throw new LineBillException("Impossible to update an inexisting lineBill", HttpStatus.CONFLICT);
+        }
+        LineBill lineBill = lineBillRepository.findById(lineBillId);
+        lineBill.setState(LineBillSates.REFUSED);
+        lineBillRepository.save(lineBill);
+
         return HttpStatus.OK;
     }
 }

@@ -2,10 +2,7 @@ package com.expensebills.back.service;
 
 import com.expensebills.back.exception.ExpenseBillException;
 import com.expensebills.back.repository.ExpenseBillRepository;
-import com.expensebills.back.vo.Advance;
-import com.expensebills.back.vo.BillStates;
-import com.expensebills.back.vo.ExpenseBill;
-import com.expensebills.back.vo.LineBill;
+import com.expensebills.back.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -74,7 +71,7 @@ public class ExpenseBillService {
         ExpenseBill expenseBill = expenseBillRepository.findById(expenseBillId);
         boolean res = true;
         for(LineBill lineBill : expenseBill.getListLineBill()){
-            if(!lineBill.isValidated()){
+            if(lineBill.getState()!= LineBillSates.VALIDATED){
                 res = false;
                 break;
             }
@@ -227,7 +224,7 @@ public class ExpenseBillService {
         List<Advance> listAdvance = expenseBill.getListAdvance();
 
         for(LineBill lineBill : listLine){
-            lineBill.setValidated(true);
+            lineBill.setState(LineBillSates.VALIDATED);
         }
         for(Advance advance : listAdvance){
             advance.setState(BillStates.VALIDATED);

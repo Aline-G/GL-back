@@ -10,6 +10,7 @@ import com.expensebills.back.service.LineBillService;
 import com.expensebills.back.service.MissionService;
 import com.expensebills.back.vo.LineBill;
 import com.expensebills.back.vo.LineBillCategory;
+import com.expensebills.back.vo.LineBillSates;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,7 +53,7 @@ public class LineBillController {
                                       @RequestParam String conveyance,
                                       @RequestParam Integer fiscalHorsepower,
                                       @RequestParam String registrationNumber,
-                                      @RequestParam File supportingDocuments,
+                                      @RequestParam String supportingDocuments,
                                       @RequestParam String guestsName) throws LineBillException, MissionException, ExpenseBillException {
         /*
          * Function that creates a new lineBill in the database.
@@ -74,7 +75,7 @@ public class LineBillController {
 
         LineBill l = this.lineBillService.saveLineBill(LineBill.builder()
                 .amount(amount)
-                .isValidated(false)
+                .state(LineBillSates.DRAFT)
                 .amountWithoutTaxes(amountWithoutTaxes)
                 .category(category)
                 .idExpenseBill(idExpenseBill)
@@ -126,6 +127,11 @@ public class LineBillController {
     @GetMapping("/validation")
     public HttpStatus validLineBill(@RequestParam int lineBillId) throws LineBillException, ExpenseBillException {
         return this.lineBillService.validLineBill(lineBillId);
+    }
+
+    @GetMapping("/refusal")
+    public HttpStatus refuseLineBill(@RequestParam int lineBillId) throws LineBillException, ExpenseBillException {
+        return this.lineBillService.refuseLineBill(lineBillId);
     }
 
 
