@@ -1,6 +1,9 @@
 package com.expensebills.back.vo;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
@@ -20,9 +23,9 @@ public class User {
     private String firstname;
     private String mail;
     // private Object status;
-    // @ManyToOne
-    // @JoinColumn(name = "work_team_id")
-    // private Team workTeam;
+    @ManyToOne
+    @JoinColumn(name = "work_team_id")
+    private Team workTeam;
 
 }
 
