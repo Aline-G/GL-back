@@ -20,7 +20,8 @@ public class ExpenseBillService {
     ExpenseBillRepository expenseBillRepository;
 
     public HttpStatus addAdvanceToCurrentBill(Advance advance) {
-        List<ExpenseBill> list = getExpenseBillList();
+        //List<ExpenseBill> list = getExpenseBillList();
+        List<ExpenseBill> list =  getExpenseBillListByUserId(advance.getUserId());
         String currentDate = LocalDate.now().toString();
         String currentYear = getYear(currentDate);
         String currentMounth = getMonth(currentDate);
@@ -48,6 +49,7 @@ public class ExpenseBillService {
                     .listAdvance(listAdvance)
                     .date(expenseBillDate)
                     .state(BillStates.DRAFT)
+                    .userId(advance.getUserId())
                     .build());
         }
         return HttpStatus.OK;
