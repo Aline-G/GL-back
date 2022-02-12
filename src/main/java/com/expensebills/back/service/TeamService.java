@@ -15,6 +15,8 @@ import java.util.stream.StreamSupport;
 @Service
 public class TeamService {
 
+    // TODO manager part of an other service ?
+
     @Autowired TeamRepository teamRepository;
     @Autowired UserService userService;
 
@@ -40,7 +42,8 @@ public class TeamService {
 
     public List<Team> findTeamsWithLeader(int idLeader) {
         return StreamSupport.stream(this.teamRepository.findAll().spliterator(), false).collect(
-                Collectors.filtering(team -> team.getLeader().getId() == idLeader, Collectors.toList()));
+                Collectors.filtering(team -> team.getLeader() != null && team.getLeader().getId() == idLeader,
+                                     Collectors.toList()));
     }
 
     public List<User> getLeadersList() {

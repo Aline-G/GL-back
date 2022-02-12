@@ -33,12 +33,12 @@ VALUES (1, 300, '2022-01', 0, 1, 1),
        (3, 0, '2021-12', 0, 2, 2);
 
 INSERT INTO line_bill (id, amount, amount_without_taxes, category, conveyance, country, date, description,
-                       fiscal_horsepower, guests_name, hebergement_place, id_expense_bill, is_validated, justificatif,
+                       fiscal_horsepower, guests_name, hebergement_place, id_expense_bill,
                        km, payment_method, registration_number, resto_place, tva, vehicle, state, supporting_documents)
 VALUES (1, 500, 488, 0, '', 'France', '2022-12-06', 'Invitation des clients au restaurant', 0, 'jean dubois', '', 1,
-        0, '', 0, '', '', 'Paris', 12, '', 0, ''),
+        0, '', '', 'Paris', 12, '', 0, ''),
        (2, 300, 250, 4, '', 'France', '2022-01-06',
-        'Achat d un robot netoyant pour vider les poubelles automatiquement', 0, '', '', 2, 1, '', 0, 'Carte', '',
+        'Achat d un robot netoyant pour vider les poubelles automatiquement', 0, 'jojo', '', 2, 0, 'Carte', '',
         '', 50, '', 0, '');
 
 INSERT INTO advance (id, amount, date, description, name, state, user_id)

@@ -23,8 +23,8 @@ public class TeamController {
     @Autowired private TeamService teamService;
     @Autowired private UserService userService;
 
-    @GetMapping("/new")
-    public Team createNewService(@RequestParam String name, @RequestParam int managerId) {
+    @GetMapping("/newfull")
+    public Team createNewServiceFull(@RequestParam String name, @RequestParam int managerId) {
 
         Team t = null;
         try {
@@ -35,6 +35,17 @@ public class TeamController {
                     System.err.println("User " + managerId + " is already a team leader.");
                 } else t = this.teamService.saveTeam(Team.builder().name(name).leader(user).build());
             } else System.err.println("User " + managerId + " doesn't exist");
+        } catch (TeamException e) {
+            e.printStackTrace();
+        }
+        return t;
+    }
+
+    @GetMapping("/new")
+    public Team createNewService(@RequestParam String name) {
+        Team t = null;
+        try {
+            t = this.teamService.saveTeam(Team.builder().name(name).build());
         } catch (TeamException e) {
             e.printStackTrace();
         }
