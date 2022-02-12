@@ -4,7 +4,6 @@ import com.expensebills.back.exception.ExpenseBillException;
 import com.expensebills.back.exception.FunctionalException;
 import com.expensebills.back.service.DateService;
 import com.expensebills.back.service.ExpenseBillService;
-import com.expensebills.back.service.UserService;
 import com.expensebills.back.vo.BillStates;
 import com.expensebills.back.vo.ExpenseBill;
 import lombok.Getter;
@@ -16,18 +15,21 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Getter
 @RequestMapping("/expensebill")
 @RestController
 public class ExpenseBillController {
+    @Autowired
+    ExpenseBillService expenseBillService;
+    @Autowired
+    DateService dateService;
 
-    @Autowired ExpenseBillService expenseBillService;
-    @Autowired DateService dateService;
-    @Autowired UserService userService;
+
 
     @GetMapping("/new")
-    public ExpenseBill createNewExpenseBill(@RequestParam String date, @RequestParam int userId,
-                                            @RequestParam int managerId) throws ExpenseBillException {
+    public ExpenseBill createNewExpenseBill(@RequestParam String date,
+                                            @RequestParam int userId) throws ExpenseBillException {
         /*
          * Function that creates a new expenseBill in the data base.
          * When an bill is created its state is DRAFT
@@ -39,10 +41,14 @@ public class ExpenseBillController {
 
         expenseBillService.verifDate(date, userId);
 
-        return this.expenseBillService.saveExpenseBill(
-                ExpenseBill.builder().amount(0).listLineBill(new ArrayList<>()).listAdvance(new ArrayList<>())
-                           .user(this.userService.getUser(userId)).manager(this.userService.getUser(userId)).date(date)
-                           .state(BillStates.DRAFT).build());
+        return this.expenseBillService.saveExpenseBill(ExpenseBill.builder()
+                .amount(0)
+                .listLineBill(new ArrayList<>())
+                .listAdvance(new ArrayList<>())
+                .userId(userId)
+                .date(date)
+                .state(BillStates.DRAFT)
+                .build());
     }
 
     @GetMapping("/delete")
@@ -91,12 +97,18 @@ public class ExpenseBillController {
         return this.expenseBillService.validExpenseBill(expenseBillId);
     }
 
+
+
     // TODO quand utilisateur sera codé faire des fonction de get en fonction de UserID passe en parametre
 
     //TRAITEMENT DES EXCEPTIONS
     @ExceptionHandler(FunctionalException.class)
-    public ResponseEntity<String> handleExpenseBillException(FunctionalException exception) {
-        return ResponseEntity.status(exception.getStatus()).body(exception.getMessage());
+    public ResponseEntity<String> handleExpenseBillException(
+            FunctionalException exception
+    ) {
+        return ResponseEntity
+                .status(exception.getStatus())
+                .body(exception.getMessage());
     }
 
 }
