@@ -18,11 +18,6 @@ public class Team {
     private String name;
     @OneToOne(orphanRemoval = true)
     @JoinColumn(name = "leader_id")
-    private User leader;
-
-    @Override
-    public String toString() {
-        return "Team{" + "id=" + id + ", name='" + name + '\'' + ", leader=" + leader.getId() + '}';
-    }
+    private Manager leader;
 }
 
