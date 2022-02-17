@@ -53,7 +53,7 @@ public class LineBillController {
                                       @RequestParam String conveyance,
                                       @RequestParam Integer fiscalHorsepower,
                                       @RequestParam String registrationNumber,
-                                      @RequestParam String supportingDocuments,
+                                      //@RequestParam String supportingDocuments,
                                       @RequestParam String guestsName) throws LineBillException, MissionException, ExpenseBillException {
         /*
          * Function that creates a new lineBill in the database.
@@ -93,7 +93,7 @@ public class LineBillController {
                 .hebergementPlace(hebergementPlace)
                 .vehicle(vehicle)
                 .guestsName(guestsName)
-                .supportingDocuments(supportingDocuments)
+                //.supportingDocuments(supportingDocuments)
                 .build());
 
         expenseBillService.addLineBill(l,idExpenseBill);
