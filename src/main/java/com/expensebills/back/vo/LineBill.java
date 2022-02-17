@@ -33,7 +33,7 @@ public class LineBill {
     private String paymentMethod;
     private String guestsName;
     //TODO justificatif
-    private String supportingDocuments;
+    //private String supportingDocuments;
 
     @ManyToOne
     @JoinTable(
